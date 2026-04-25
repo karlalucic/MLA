@@ -1,0 +1,41 @@
+# secrets — never commit
+.env
+.env.local
+*.secret
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.python-version
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# data — derived locally; ESS license forbids redistribution
+data/raw/
+data/interim/
+data/analysis/
+*.parquet
+*.feather
+
+# build artefacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+paper/main.pdf
+
+# os / editor
+.DS_Store
+.vscode/
+.idea/
