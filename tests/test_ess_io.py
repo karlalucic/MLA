@@ -106,6 +106,45 @@ def test_load_round_from_file_synthetic_sav(tmp_path: Path):
     assert (df["essround"] == 11).all()
 
 
+def test_load_round_from_file_synthetic_parquet(tmp_path: Path):
+    """Parquet path: write a synthetic parquet matching the API's default
+    output format and confirm the loader picks it up and selects only
+    requested columns even when others exist in the schema."""
+    raw = tmp_path / "ess"
+    raw.mkdir()
+    syn = pd.DataFrame(
+        {
+            "cntry": ["BE", "DE"],
+            "idno": [1, 2],
+            "trstprl": [5.0, 6.0],
+            "stfdem": [4.0, 7.0],
+            "agea": [40, 50],
+            "name": ["alice", "bob"],  # extra column not in CORE_COLUMNS
+        }
+    )
+    syn.to_parquet(raw / "ess11e04_0.parquet", index=False)
+    df = load_round_from_file(
+        11,
+        raw_dir=raw,
+        columns=("cntry", "idno", "trstprl", "stfdem", "agea", "isco08"),
+    )
+    assert df is not None
+    # `isco08` was requested but absent from the parquet schema → should be
+    # silently dropped (not raise).
+    assert "isco08" not in df.columns
+    assert "name" not in df.columns
+    assert set(df.columns) >= {"cntry", "idno", "trstprl", "stfdem", "agea", "essround"}
+    assert (df["essround"] == 11).all()
+
+
+def test_default_doi_suffix_covers_R6_to_R11():
+    from src.mla.ess_io import DEFAULT_DOI_SUFFIX
+
+    for r in (6, 7, 8, 9, 10, 11):
+        assert r in DEFAULT_DOI_SUFFIX
+        assert DEFAULT_DOI_SUFFIX[r].startswith(f"ess{r}")
+
+
 # --------------------------------------------------------------------- #
 # Full-panel orchestrator
 # --------------------------------------------------------------------- #

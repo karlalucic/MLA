@@ -100,13 +100,14 @@ def load_teaching_panel(
 
 
 # --------------------------------------------------------------------- #
-# Per-round integrated SAV/DTA in data/raw/ess/
+# Per-round integrated SAV/DTA/parquet in data/raw/ess/
 # --------------------------------------------------------------------- #
 _ROUND_FILE_PATTERNS: dict[int, list[str]] = {
     n: [
-        f"ESS{n}.sav", f"ESS{n}.dta",
-        f"ESS{n}e*.sav", f"ESS{n}e*.dta",
-        f"ess{n}.sav", f"ess{n}.dta",
+        f"ESS{n}.parquet", f"ESS{n}.sav", f"ESS{n}.dta",
+        f"ESS{n}e*.parquet", f"ESS{n}e*.sav", f"ESS{n}e*.dta",
+        f"ess{n}.parquet", f"ess{n}.sav", f"ess{n}.dta",
+        f"ess{n}e*.parquet", f"ess{n}e*.sav", f"ess{n}e*.dta",
     ]
     for n in range(1, 12)
 }
@@ -130,11 +131,23 @@ def find_round_file(round_num: int, raw_dir: Path = RAW_ESS_DIR) -> Path | None:
 
 def _read_ess_file(path: Path, columns: Iterable[str] | None) -> pd.DataFrame:
     keep = list(columns) if columns is not None else None
-    if path.suffix.lower() == ".sav":
+    suffix = path.suffix.lower()
+    if suffix == ".parquet":
+        # `usecols` in parquet is `columns=`. Tolerate missing columns by
+        # intersecting against the parquet schema first.
+        if keep is not None:
+            import pyarrow.parquet as pq
+
+            schema_names = set(pq.ParquetFile(path).schema_arrow.names)
+            keep = [c for c in keep if c in schema_names]
+            df = pd.read_parquet(path, columns=keep)
+        else:
+            df = pd.read_parquet(path)
+    elif suffix == ".sav":
         df, _meta = pyreadstat.read_sav(
             str(path), usecols=keep, disable_datetime_conversion=True
         )
-    elif path.suffix.lower() == ".dta":
+    elif suffix == ".dta":
         df, _meta = pyreadstat.read_dta(
             str(path), usecols=keep, disable_datetime_conversion=True
         )
@@ -166,24 +179,68 @@ def load_round_from_file(
 
 
 # --------------------------------------------------------------------- #
-# ESS API at https://api.ess.sikt.no/  (beta as of April 2026)
+# ESS API at https://api.ess.sikt.no/  (single endpoint, DOI-based)
 # --------------------------------------------------------------------- #
+# Spec discovered at runtime from /docs/openapi (April 2026):
+#   GET /v1/data/dataFile/{doiPrefix}/{doiSuffix}
+#       ?userId=<UUID>&fileFormat=parquet|csv|sav|dta
+#   → 307 redirect to a short-lived Azure blob URL.
+# `userId` is for usage tracking, not authentication.
 ESS_API_BASE = "https://api.ess.sikt.no"
+ESS_DOI_PREFIX = "10.21338"
+
+# Latest editions of the integrated face-to-face files at the time of
+# writing. Override via the `doi_suffix=` argument if a newer edition
+# becomes available, or if the default 404s.
+DEFAULT_DOI_SUFFIX: dict[int, str] = {
+    # Suffixes verified by probing the ESS API on 2026-04-25; the integrated
+    # face-to-face files for each round (NOT the R10 self-completion side-file).
+    6: "ess6e02_5",
+    7: "ess7e02_3",
+    8: "ess8e02_3",
+    9: "ess9e03_2",
+    10: "ess10e03_3",
+    11: "ess11e04_0",
+}
+
+
+def _file_format_to_ext(file_format: str) -> str:
+    return {"parquet": "parquet", "csv": "csv", "sav": "sav", "dta": "dta"}[file_format]
 
 
 def fetch_round_via_api(
     round_num: int,
     user_id: str | None = None,
     dest_dir: Path = RAW_ESS_DIR,
-    timeout: float = 60.0,
+    file_format: str = "parquet",
+    doi_suffix: str | None = None,
+    timeout: float = 120.0,
+    chunk_size: int = 1 << 16,
 ) -> Path:
-    """Try to download an ESS round SAV file via the ESS API.
+    """Download an ESS integrated round file via the official ESS API.
 
-    The API is in beta; the SAV download endpoint may not be stable.
-    We probe a small set of plausible URL shapes; if none deliver an SAV,
-    we raise with a pointer to the manual fallback path.
+    Parameters
+    ----------
+    round_num
+        ESS round (1–11). Resolves to a DOI suffix via :data:`DEFAULT_DOI_SUFFIX`
+        unless overridden by ``doi_suffix``.
+    user_id
+        ESS user id. Falls back to ``ESS_USER_ID`` from ``.env``.
+    dest_dir
+        Where to write the downloaded file (default ``data/raw/ess/``).
+    file_format
+        ``parquet`` (default — fastest, smallest), ``csv``, ``sav``, ``dta``.
+    doi_suffix
+        Override the DOI suffix (e.g. ``"ess11e04_0"``). Use when ESS
+        publishes a newer edition than the default map knows about.
+    timeout, chunk_size
+        Standard streaming-download knobs.
+
+    Returns the path of the saved file. Raises with a clear pointer to the
+    manual fallback (drop a SAV/DTA/parquet into ``data/raw/ess/``) if the
+    API rejects the request.
     """
-    import requests  # local import keeps top-level optional
+    import requests
 
     load_dotenv(REPO_ROOT / ".env")
     user_id = user_id or os.environ.get("ESS_USER_ID")
@@ -192,43 +249,77 @@ def fetch_round_via_api(
             "ESS_USER_ID not set. Either:\n"
             "  (a) register at https://ess.sikt.no/, copy your user id into .env\n"
             "      as ESS_USER_ID=<id>, then retry; or\n"
-            "  (b) drop ESS{round}.sav into data/raw/ess/ manually."
+            "  (b) drop ESS{round}.<sav|dta|parquet> into data/raw/ess/ manually."
         )
 
+    suffix = doi_suffix or DEFAULT_DOI_SUFFIX.get(round_num)
+    if not suffix:
+        raise RuntimeError(
+            f"No default DOI suffix for round {round_num}. Pass doi_suffix= "
+            f"explicitly (look it up at https://ess.sikt.no/en/data-portal)."
+        )
+
+    ext = _file_format_to_ext(file_format)
     dest_dir.mkdir(parents=True, exist_ok=True)
-    dest = dest_dir / f"ESS{round_num}.sav"
+    dest = dest_dir / f"{suffix}.{ext}"
 
-    # Refine these once https://api.ess.sikt.no/docs solidifies the schema.
-    candidate_urls = [
-        f"{ESS_API_BASE}/v1/datasets/ess{round_num}/file/spss",
-        f"{ESS_API_BASE}/datasets/ess-{round_num}/spss",
-        f"{ESS_API_BASE}/integrated-files/ess{round_num}/sav",
-    ]
-    headers = {"X-ESS-User-Id": user_id, "Accept": "application/octet-stream"}
+    url = f"{ESS_API_BASE}/v1/data/dataFile/{ESS_DOI_PREFIX}/{suffix}"
+    params = {"userId": user_id, "fileFormat": file_format}
 
-    last_err: Exception | None = None
-    for url in candidate_urls:
+    # The endpoint returns 307 → short-lived Azure blob URL; follow it.
+    r = requests.get(url, params=params, timeout=timeout, stream=True, allow_redirects=True)
+    if r.status_code != 200:
         try:
-            r = requests.get(url, headers=headers, timeout=timeout, stream=True)
-            ct = r.headers.get("content-type", "")
-            if r.status_code == 200 and ct.startswith(
-                ("application/octet-stream", "application/x-spss")
-            ):
-                with dest.open("wb") as f:
-                    for chunk in r.iter_content(chunk_size=1 << 16):
-                        f.write(chunk)
-                return dest
-        except requests.RequestException as e:
-            last_err = e
+            body = r.json()
+        except Exception:  # noqa: BLE001
+            body = r.text[:500]
+        raise RuntimeError(
+            f"ESS API rejected request for round {round_num} "
+            f"(suffix={suffix}, format={file_format}): "
+            f"HTTP {r.status_code}. Body: {body}\n"
+            f"Manual fallback: download from https://ess.sikt.no/en/data-portal "
+            f"and place the file at {dest_dir}/."
+        )
 
-    raise RuntimeError(
-        f"ESS API did not return a SAV for round {round_num} on any probed "
-        f"endpoint. The beta API at {ESS_API_BASE}/docs may not yet expose "
-        f"SAV download.\n"
-        f"Manual fallback: download ESS{round_num} integrated SAV from "
-        f"https://ess.sikt.no/ and place at {dest}.\n"
-        f"Last network error (if any): {last_err!r}"
-    )
+    total = 0
+    with dest.open("wb") as f:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            if not chunk:
+                continue
+            f.write(chunk)
+            total += len(chunk)
+    if total == 0:
+        dest.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"ESS API returned an empty body for round {round_num} (suffix={suffix})."
+        )
+    return dest
+
+
+def fetch_rounds(
+    rounds: Iterable[int] = (6, 7, 8, 9, 10, 11),
+    file_format: str = "parquet",
+    dest_dir: Path = RAW_ESS_DIR,
+    skip_existing: bool = True,
+    user_id: str | None = None,
+) -> dict[int, Path]:
+    """Download a batch of ESS rounds via the API. Returns ``{round: path}``."""
+    out: dict[int, Path] = {}
+    for r in rounds:
+        suffix = DEFAULT_DOI_SUFFIX.get(r)
+        if suffix is None:
+            print(f"[ess_io] skip R{r}: no DOI default")
+            continue
+        ext = _file_format_to_ext(file_format)
+        candidate = dest_dir / f"{suffix}.{ext}"
+        if skip_existing and candidate.exists():
+            out[r] = candidate
+            continue
+        path = fetch_round_via_api(
+            r, user_id=user_id, dest_dir=dest_dir, file_format=file_format
+        )
+        out[r] = path
+    return out
 
 
 # --------------------------------------------------------------------- #
