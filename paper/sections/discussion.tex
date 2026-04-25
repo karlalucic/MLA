@@ -1,0 +1,90 @@
+\section{Discussion}\label{sec:discussion}
+
+\paragraph{What the within--between gap means.}
+The headline result---a strong positive between-country association
+between mean GenAI exposure and institutional trust, paired with a
+within-country effect indistinguishable from zero---is the canonical
+\citet{SchmidtCatranFairbrother2016} configuration in which a naive
+specification that constrains $\gamma_W = \gamma_B$ would
+mis-estimate both. Read substantively, it says that the
+cross-sectional positive correlation reflects everything that makes
+a country a high-AI-exposure country (income per capita, share of
+the workforce in services and knowledge occupations, density of
+high-skill institutions) rather than the AI exposure itself. The
+correlation flows from the third variable that drives both. Within a
+given country over 2012--2024, the variation in country-mean exposure
+that is identifiable separately from a global time trend is too
+small, or too uncorrelated with trust, to move the outcome.
+
+\paragraph{Why this isn't the robot-exposure story.}
+The single-country robot-exposure literature
+\citep{ColantoneStanig2018,FreyBergerChen2018,AnelliColantoneStanig2021}
+identifies effects from local-labour-market shocks within a single
+national institutional environment, where between-region variation in
+exposure is plausibly orthogonal to baseline trust. Pooling
+cross-nationally exposes that the same exercise across the European
+panel cannot rule out the third-variable confound. The literature's
+mechanism (structural grievance, performance disappointment) may
+still hold at the local level within countries; this paper does not
+adjudicate that. What it shows is that when you scale the analysis
+to the multi-country panel that is the natural unit for European
+political-attitude research, the within-between distinction reshapes
+the answer.
+
+\paragraph{Pre-registered null on H4.}
+The H4 cross-level interaction was deliberately specified with
+both substitution and curator readings, plus a precise null. The
+data return the null. The within-country exposure effect (such as
+it is) is not heterogeneous in the individual education gradient,
+which falsifies both substitution and curator framings on the
+within-country margin. This is a strong null---the interaction is
+small in absolute value and tightly estimated, not merely
+underpowered.
+
+\paragraph{Endogeneity.}
+The within-between specification handles time-invariant
+country-level confounders---welfare-state arrangements, baseline
+political culture, geography---but not time-varying ones.
+A confounder that moves with country-year exposure and also moves
+trust in the same direction (e.g.\ contemporaneous shifts in media
+environment, immigration policy, or party-system fragmentation)
+would not be absorbed by the country random intercept. Reverse
+causation is also plausible: declining trust may accelerate AI
+adoption via labour-market deregulation or reduced public investment
+in retraining, rather than the other way around. The
+cross-sectional estimate $\hat\gamma_B$ in particular should be
+read as an association \emph{within a multilevel structure}, not a
+causal effect.
+
+\paragraph{Limitations.}
+Three are worth flagging beyond the endogeneity caveat above.
+\emph{First}, the L2 country-year VPC of $0.022$ in M0 is at the
+soft floor of where a within--between decomposition is well-powered
+to distinguish $\gamma_W$ from $\gamma_B$. The Wald rejection of
+equality is driven primarily by the precision of $\hat\gamma_W$
+(near-zero point estimate with reasonable standard error) rather
+than by a strong identifying signal in $\hat\gamma_W$.
+\emph{Second}, the leave-one-out attenuation of $\hat\gamma_B$ from
+$+11.24$ to $+5.44$ implies that the headline between-effect is
+inflated by the mechanical correlation between an individual's own
+exposure and the country-year average. The leave-one-out estimate
+is the conceptually cleaner one; future work should use it as the
+primary specification.
+\emph{Third}, three robustness avenues are deferred:
+the alternative occupation-exposure measures (Webb 2020, Felten
+2021, Felten 2023, Eloundou 2024), which require an
+ISCO-08$\leftrightarrow$SOC-2010 crosswalk and additional public
+downloads; the Kenward-Roger correction on L3 standard errors via
+\texttt{pymer4}/\texttt{lmerTest}; and the multiple imputation of
+\texttt{hinctnta} missingness.
+
+\paragraph{Conclusion.}
+The diffusion of generative AI capabilities since 2022 has not, in
+the period this panel covers, moved European institutional trust
+within countries in the way single-country robot-exposure studies
+might lead one to expect. The cross-sectional positive association
+between AI exposure and trust does not survive the
+within-between decomposition. Whether this changes as the GenAI
+capability frontier diffuses further into white-collar labour
+markets is an open empirical question that the next ESS round
+(R12, fielding 2026) will let us begin to answer.

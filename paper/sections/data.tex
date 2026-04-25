@@ -1,0 +1,109 @@
+\section{Data and measurement}\label{sec:data}
+
+\paragraph{Individual data.}
+Six rounds of the European Social Survey (R6 to R11, fielded 2012,
+2014, 2016, 2018, 2021, and 2023) are pooled at the individual level.
+The integrated face-to-face files are downloaded via the ESS Sikt API
+(\url{https://api.ess.sikt.no/}) under per-round DOIs (e.g.\
+\texttt{ess11e04\_0} for R11 Edition 4.0). The total panel is
+$N=276{,}491$ individuals across 36 country codes and 154
+country-years (21--30 countries per round). The analysis sample after
+listwise deletion of L1 controls and L2 macro covariates is
+$N=165{,}969$ in 30 countries.
+
+\paragraph{Outcome.}
+The institutional-trust composite is the per-item z-standardised
+mean of \texttt{trstprl} (trust in [country] parliament),
+\texttt{trstlgl} (trust in legal system), and \texttt{stfdem}
+(satisfaction with democracy), with sentinel codes ($>10$) coerced
+to missing first. Standardisation is per item across the pooled
+panel so that between-country and between-round variance in the
+composite is preserved (the multilevel model would have nothing to
+decompose otherwise). Robustness models on each item separately
+appear in Section~\ref{sec:results-robust}.
+
+\paragraph{Individual GenAI exposure.}
+Each respondent's 4-digit ISCO-08 occupation is matched to the
+ILO--NASK 2025 occupation-level mean automation score
+\citep{Gmyrek2025}, which aggregates 30,000 task-level scores
+across 427 occupations. Two vintages are derivable from the 2025
+release: the original 2023 GBB scores \citep{Gmyrek2023} and the
+2025 ILO--NASK re-scored values, which incorporate GPT-4 / GPT-4o /
+Gemini-1.5-era capabilities. I apply a vintage rule:
+the 2023 GBB scores for ESS R6--R10 (fielded 2012--2022, the
+pre-GPT-4 era) and the 2025 scores for R11 (fielded
+2023--2024, the post-GPT-4 era). Within-country variation in
+$\bar E_{ct}$ therefore arises from two sources: slow compositional
+drift in occupation shares $w_{oct}$, and the sharp
+capability-driven shift at R10$\to$R11. A robustness analysis using
+the 2025 scores uniformly across all rounds isolates the pure
+compositional channel.
+
+The individual exposure measure is z-standardised within the
+analysis sample for interpretability and to allow a comparable scale
+for the random slope on individual exposure in M4--M6. Coverage of
+the ILO--NASK score table is 83.2\% on average across rounds; the
+remaining 16.8\% have ISCO codes that are ESS sentinels (66666
+refusal, 99999 no answer, 77777 not applicable) or that fall outside
+the 427-code ILO--NASK set. These individuals contribute to L1
+controls but drop out of the exposure-coefficient sample via
+listwise deletion.
+
+\paragraph{Country-year aggregation.}
+The country-year exposure $\bar E_{ct}$ is the ESS design-weighted
+mean of individual GenAI exposure within each (country, round) cell:
+\begin{equation}
+\bar E_{ct} \;=\; \frac{\sum_{i \in (c,t)} w_i \cdot E_{o(i),v(t)}}
+                       {\sum_{i \in (c,t)} w_i},
+\end{equation}
+where $w_i$ is \texttt{pspwght} and $v(t)$ is the round-vintage map
+above. ESS-internal aggregation at 4-digit ISCO is preferred to a
+Eurostat LFS-based aggregation that would coarsen to 1- or 2-digit
+ISCO and discard most of the score's granularity. A leave-one-out
+variant $\bar E_{ct}^{(-i)}$, which excludes individual $i$ from
+the cell average, is used in robustness.
+
+\paragraph{Mundlak decomposition.}
+The country-year exposure is decomposed:
+\[
+  \bar E_{ct} = \underbrace{\bar E_c}_{\text{between}}
+              + \underbrace{(E_{ct}-\bar E_c)}_{\text{within}}.
+\]
+Including both terms separately in the regression instead of
+$\bar E_{ct}$ allows the between-coefficient $\gamma_B$ and the
+within-coefficient $\gamma_W$ to differ. The Wald test of equality is
+the substantive Mundlak test \citep{Mundlak1978}.
+
+\paragraph{Macro and institutional covariates.}
+Country-year macro covariates come from Eurostat: real GDP growth
+(\texttt{nama\_10\_gdp}), unemployment rate (\texttt{une\_rt\_a},
+ages 15--74, both sexes), and HICP inflation
+(\texttt{prc\_hicp\_aind}). Each ESS round is paired with its modal
+fielding year (R6$\to$2012, R7$\to$2014, \ldots, R10$\to$2021,
+R11$\to$2023). Israel and Russia are not in Eurostat and so drop
+from the macro-controlled models via listwise deletion (4.9\% of
+the panel). The L3 institutional moderator is the OECD Employment
+Protection Legislation index, version 1, regular contracts, 2007
+baseline (pre-period for exogeneity); 23 of the 36 ESS countries
+are OECD members and have a non-missing value. Welfare-regime
+typology follows the Esping-Andersen tradition with a Western Balkans
+extension to the Eastern-European class.
+
+Figure~\ref{fig:exposure} shows the per-country trajectories of
+$\bar E_{ct}$ across rounds, with the cross-country mean and the
+static-vintage comparator overlaid. The R10$\to$R11 vintage shift
+is visible as a jump in the country-year mean. Table~\ref{tab:descriptives}
+gives the descriptive statistics on the M3a sample.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{figures/fig1_exposure_trajectories.pdf}
+  \caption{Country-year GenAI exposure trajectories, ESS R6--R11.
+  Thin grey lines are individual countries; the heavy red line is
+  the cross-country mean; the dashed blue line is the
+  static-vintage (2025 scores throughout) comparator. The dotted
+  vertical reference marks the R10$\to$R11 vintage shift.}
+  \label{fig:exposure}
+\end{figure}
+
+\input{tables/tab1_descriptives}

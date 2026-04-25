@@ -1,0 +1,75 @@
+\section{Methods}\label{sec:methods}
+
+\paragraph{Three-level model.}
+Individuals $i$ are nested in country-years $(c,t)$, which are
+themselves nested in countries $c$. The empty model is
+\begin{equation}
+y_{ict} \;=\; \gamma_{000} + u_{0c} + v_{0(c,t)} + e_{ict},
+\quad u_{0c}\!\sim\!N(0,\sigma^2_{u_0}),\;
+v_{0(c,t)}\!\sim\!N(0,\sigma^2_{v_0}),\;
+e_{ict}\!\sim\!N(0,\sigma^2_e).
+\label{eq:m0}
+\end{equation}
+Variance is decomposed into the L3 country share
+$\rho_3 = \sigma^2_{u_0}/\sigma^2_{\mathrm{tot}}$ (the intraclass
+correlation), the L2 country-year share
+$\rho_2 = \sigma^2_{v_0}/\sigma^2_{\mathrm{tot}}$ (the
+variance-partition coefficient), and the L1 individual share
+$\rho_1$, with $\sigma^2_{\mathrm{tot}} = \sigma^2_{u_0}+\sigma^2_{v_0}+\sigma^2_e$.
+
+\paragraph{Within--between specification.}
+The core model M3a augments \eqref{eq:m0} with L1 controls
+$X_{ict}$, country-year macro covariates $Z_{ct}$ (round dummies,
+GDP growth, unemployment, HICP inflation), and the Mundlak-decomposed
+exposure terms:
+\begin{multline}
+y_{ict} = \gamma_{000} + \boldsymbol{\beta}^\top X_{ict}
++ \boldsymbol{\delta}^\top Z_{ct}
++ \gamma_W \cdot (E_{ct} - \bar E_c)
++ \gamma_B \cdot \bar E_c \\
++ \beta_{\mathrm{genai}} \cdot \mathrm{genai}_{ict}
++ u_{0c} + v_{0(c,t)} + e_{ict}.
+\label{eq:m3a}
+\end{multline}
+The Mundlak Wald is a test of $H_0: \gamma_W = \gamma_B$:
+\[
+  \mathrm{Wald} \;=\; \frac{(\hat\gamma_W - \hat\gamma_B)^2}
+                            {\widehat{\mathrm{Var}}(\hat\gamma_W) +
+                             \widehat{\mathrm{Var}}(\hat\gamma_B) -
+                             2\,\widehat{\mathrm{Cov}}(\hat\gamma_W,\hat\gamma_B)}
+  \;\overset{H_0}{\sim}\; \chi^2(1).
+\]
+M3b drops the round dummies; the comparison clarifies how much of the
+within-effect is global trend versus country-specific deviation.
+
+\paragraph{Random slopes and cross-level interactions.}
+M4 adds a random slope on individual exposure
+$\mathrm{genai}_{ict}^{\mathrm{gmc}}$, group-mean-centred so the
+intercept variance is interpretable at the country mean of exposure
+\citep{EndersTofighi2007}. M5 adds the cross-level interaction
+$(E_{ct}-\bar E_c)\times \mathrm{eisced}_{ict}$, the H4
+adjudication term. M6 restricts to OECD countries and adds the L3
+institutional moderator
+$\mathrm{EPL}_c \times (E_{ct}-\bar E_c)$ along with the EPL main
+effect.
+
+\paragraph{Estimation.}
+All models are fit by REML using \texttt{statsmodels.MixedLM} (Python
+0.14.6) with the L-BFGS-B optimizer. The 3-level structure is
+encoded by passing \texttt{groups="cntry"} for the L3 random
+intercept and a variance component
+\texttt{vc\_formula = \{"cy": "0 + C(country\_year)"\}} for the L2
+random intercept nested in L3. Model comparisons that differ in the
+fixed part are flagged for full ML refitting if a likelihood ratio
+test is reported; here I rely on Wald tests of single fixed
+coefficients and on the variance-component progression.
+
+\paragraph{Inference caveats.}
+With 30 L3 units, the asymptotic Wald-normal standard errors on L3
+coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are anti-conservative
+\citep{McNeishStapleton2016}. The implementation plan calls for
+re-estimating these via \texttt{pymer4}'s Kenward-Roger correction;
+that step is documented as a follow-up rather than completed here,
+and the L3 inferences in Section~\ref{sec:results} should be read
+with the qualification that their nominal $p$-values are likely
+slightly too small.

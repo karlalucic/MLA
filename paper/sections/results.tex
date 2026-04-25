@@ -1,0 +1,170 @@
+\section{Results}\label{sec:results}
+
+\subsection{Variance decomposition}\label{sec:results-vc}
+
+The empty model (M0) yields an L3 country ICC of $\rho_3=0.246$
+and an L2 country-year VPC of $\rho_2=0.022$. The L3 share is at the
+upper end of the range
+($0.15$--$0.25$) reported by \citet{SchmidtCatranFairbrother2016}
+for trust outcomes; the L2 share, while modest, is above the soft
+floor below which a within--between decomposition adds little to
+a pure country-FE specification. The L1 residual share of $0.732$
+sits inside the $0.70$--$0.85$ range conventional in pooled ESS
+trust models. The decomposition therefore supports the three-level
+specification.
+
+Adding L1 controls (M1) explains 8\% of L1 residual variance and 17\%
+of L2 country-year variance, while leaving the L3 ICC essentially
+unchanged at $0.256$. Adding L2 macro covariates and round dummies
+(M2) explains a cumulative 58\% of L2 variance and 18\% of L3
+variance: the round dummies in particular absorb the global
+upward trend in trust between R6 and R11, leaving the L2 VPC at
+$0.011$ (cf. M0's $0.022$). The contrast between M3a (with round
+dummies) and M3b (without) in Section~\ref{sec:results-headline} is
+designed to surface the interpretive trade-off this absorption
+introduces.
+
+Figure~\ref{fig:variance} visualises the variance decomposition
+across the M0$\to$M6 progression as a stacked bar. The L3 share
+contracts as covariates that are correlated with country differences
+are added, and the random slope in M4 absorbs further L3 variance
+into a slope variance not displayed in this projection.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig4_variance_components.pdf}
+  \caption{Variance decomposition across the M0$\to$M6 model
+  progression. L3 country variance contracts as country-correlated
+  covariates and the random slope are added.}
+  \label{fig:variance}
+\end{figure}
+
+\subsection{The within--between headline}\label{sec:results-headline}
+
+Table~\ref{tab:models} reports the full M0$\to$M6 progression.
+The Mundlak decomposition (M3a) is the substantive heart of the
+analysis. The point estimates are
+\[
+  \hat\gamma_W = +0.024 \;(\mathrm{SE}\;1.123), \quad
+  \hat\gamma_B = +11.239 \;(\mathrm{SE}\;3.427),
+\]
+with a Wald test of equality of $\chi^2(1)=9.66$, $p=0.002$. The
+within-country effect is statistically indistinguishable from zero,
+while the between-country effect is large, positive, and
+significant. The cross-sectional positive correlation between AI
+exposure and trust does not carry through to within-country
+exposure shifts.
+
+The sign of $\hat\gamma_B$ is the opposite of H1. Countries with
+higher mean GenAI exposure---which are typically wealthier, more
+service-economy-intensive, and have higher baseline institutional
+quality---report \emph{higher} trust, not lower. This is the
+selection / institutional-adaptation reading: the cross-sectional
+correlation is confounded by everything that makes a country a
+high-AI-exposure country in the first place. The M3b row, in which
+$\hat\gamma_W = +1.46$ when round dummies are removed, attributes
+to within-country exposure changes the global trend in trust over
+2012--2024 that round dummies otherwise absorb; it is reported
+alongside M3a precisely because the gap between the two clarifies
+that the within-country exposure shifts identifiable separately
+from the time trend are not detectably correlated with trust.
+
+Figure~\ref{fig:caterpillar} shows the country random intercepts
+(BLUPs) from M3a. Cross-country heterogeneity in trust persists
+after the L1, L2, and Mundlak controls: Northern European countries
+(Denmark, Norway, Sweden, Finland, Iceland, Switzerland, the
+Netherlands) cluster in the positive tail, while Eastern and
+Southern European countries (Bulgaria, Hungary, Greece) cluster in
+the negative tail. The M3a sample includes 30 of the 36 ESS
+countries (Israel and Russia are dropped via the macro listwise
+deletion).
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.55\linewidth]{figures/fig2_caterpillar.pdf}
+  \caption{Caterpillar of country random intercepts from M3a
+  (standardised trust composite). Error bars are
+  $\pm 1.96\,\hat\sigma_{u_0}$ envelopes; cluster-specific
+  posterior SEs are not exposed by \texttt{statsmodels.MixedLM}.}
+  \label{fig:caterpillar}
+\end{figure}
+
+\subsection{Cross-level interaction (H4)}
+
+M5 adds the within-exposure $\times$ education interaction. The
+estimated interaction coefficient is $-0.142$ ($\mathrm{SE}\;0.130$,
+$p=0.275$), a precise null. Neither H4a (substitution) nor H4b
+(curator) is supported; the data prefer H4$_0$. The within-country
+exposure effect, such as it is, does not vary detectably with
+individual education. Figure~\ref{fig:interaction} plots the
+predicted effect at each ISCED level over a plausible range of
+within-country exposure deviations; the lines are visually
+parallel, consistent with the null interaction.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig3_conditional_within_x_education.pdf}
+  \caption{Conditional within-country exposure effect on trust by
+  ISCED education level (M5). Lines are nearly parallel: the
+  cross-level interaction coefficient is statistically zero.}
+  \label{fig:interaction}
+\end{figure}
+
+\subsection{Institutional moderation (H5)}
+
+M6 restricts to the 22 OECD ESS countries with a non-missing
+2007 EPL value. The within $\times$ EPL interaction is positive in
+sign ($+1.64$) but imprecisely estimated ($\mathrm{SE}\;1.44$,
+$p\approx 0.26$). With only 22 L3 units, identification of an L3
+moderator is intrinsically limited; H5 cannot be rejected nor
+supported.
+
+\input{tables/tab2_models_m0_m6}
+
+\subsection{Mundlak Wald and robustness}\label{sec:results-robust}
+
+Table~\ref{tab:mundlak} tabulates the Mundlak Wald across the
+specifications that include the within and between exposure terms.
+The within $\neq$ between conclusion holds in every specification
+(M3a, M3b, M4, M5) at $p \leq 0.002$, with the largest test
+statistic in M4 ($\chi^2(1)=18.42$) where the random slope on
+individual exposure tightens the country-year fit.
+
+\input{tables/tab3a_mundlak}
+
+Table~\ref{tab:robustness} summarises the seven robustness checks
+that the implementation plan §7 calls for and that are achievable
+without additional data acquisition or an R bridge. The headline
+pattern is robust:
+
+\begin{itemize}
+\setlength\itemsep{2pt}
+  \item Each trust item separately replicates the gap: $\hat\gamma_B
+        \in [11.0, 12.0]$ for \texttt{trstprl}, \texttt{trstlgl},
+        and \texttt{stfdem} individually, with Mundlak Wald
+        $p \leq 0.014$ in each case.
+  \item Across the 30 country-leverage drops, $\hat\gamma_B$ ranges
+        $[9.46, 12.24]$ and the Wald $p$-value remains
+        $\leq 0.012$. No single country drives the result.
+  \item Dropping the COVID-disrupted R10 round leaves
+        $\hat\gamma_B = +10.52$ ($p=0.001$).
+  \item The vintage-static comparator (2025 scores throughout)
+        gives $\hat\gamma_B=+13.43$ ($p=0.0003$): the between-effect
+        is in fact larger when the R10$\to$R11 vintage shift is
+        switched off, ruling out the vintage shock as the source of
+        the cross-country pattern.
+  \item Leave-one-out aggregation, which removes the mechanical
+        correlation between an individual's own exposure and the
+        country-year mean, attenuates $\hat\gamma_B$ from $+11.24$
+        to $+5.44$. The within-country effect remains near zero
+        ($\hat\gamma_W=+0.51$, $\mathrm{SE}\;0.45$). The
+        attenuation is large enough that it is reported in the
+        main text rather than buried in an appendix.
+  \item A within-only fixed-effects benchmark
+        (\texttt{linearmodels.PanelOLS} with country fixed effects,
+        cluster-robust SEs) yields a coefficient on $\bar E_{ct}$ of
+        $-0.19$, recovering---up to sign in a tiny range around
+        zero---the M3a $\hat\gamma_W$. The Mundlak identity holds.
+\end{itemize}
+
+\input{tables/tab3b_robustness}

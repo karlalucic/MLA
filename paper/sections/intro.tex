@@ -1,0 +1,55 @@
+\section{Introduction}
+
+The diffusion of generative AI capabilities since 2022 has reignited a
+long-standing question in political sociology: do technological shocks
+to occupational structure erode trust in democratic institutions?
+Within-country evidence on automation exposure points consistently to
+political consequences. \citet{ColantoneStanig2018} and
+\citet{AnelliColantoneStanig2021} show that local-labour-market
+exposure to industrial robots predicts populist voting and reduced
+political trust. \citet{FreyBergerChen2018} document analogous patterns
+for U.S. county-level robot installations. The mechanism in these
+studies is structural-grievance: technology generates losers, and
+losers re-route their political behaviour through grievance channels
+\citep{GidronHall2017,Kurer2020}.
+
+What does this look like for generative AI? Two features of the
+literature so far suggest the question is genuinely open. First,
+existing studies use \emph{robot} exposure measures (Felten 2021,
+Webb 2020) that are concentrated in manufacturing tasks, which is the
+opposite of GenAI's white-collar/services bias. Second, almost all the
+empirical work is single-country, leaving open whether the
+cross-national pattern is the same as the within-country one. The
+distinction matters: as \citet{BellJones2015} and especially
+\citet{SchmidtCatranFairbrother2016} argue, when between- and
+within-country effects of a covariate diverge, conventional
+multilevel models that constrain them to be equal answer a different
+substantive question than the one researchers usually pose.
+
+This paper makes the within--between distinction central. I pool six
+rounds of the European Social Survey (R6 through R11, 2012--2024)
+and merge them at the individual level with the ILO--NASK 2025
+GenAI exposure scores at 4-digit ISCO-08 \citep{Gmyrek2025}. I
+aggregate per-individual exposure to a country-year mean
+$\bar E_{ct}$, decompose it into a between component $\bar E_c$ and
+a within component $E_{ct}-\bar E_c$, and estimate three-level
+multilevel models with random intercepts at country and country-year.
+The headline result is that the between- and within-coefficients
+are sharply different: the cross-sectional positive correlation
+between AI exposure and trust does not carry through to within-country
+exposure shifts. The Mundlak Wald test rejects equality, and an
+education-moderation test of the within-effect returns a precise null
+that falsifies both the substitution and curator readings.
+
+The paper proceeds as follows. Section~\ref{sec:theory} draws on
+performance theories of trust, structural-grievance accounts, and the
+robot-exposure empirical tradition to derive the hypotheses.
+Section~\ref{sec:data} describes the ESS panel, the ILO--NASK exposure
+scores with their 2023/2025 vintage rule, and the macro and
+institutional covariates. Section~\ref{sec:methods} sets out the
+three-level model, the within--between specification, and the
+inference apparatus. Section~\ref{sec:results} presents the M0--M6
+progression, the Mundlak Wald, the cross-level interaction, and the
+robustness battery. Section~\ref{sec:discussion} interprets the
+finding, discusses the endogeneity concerns the design cannot
+foreclose, and notes limitations.
