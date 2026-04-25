@@ -39,3 +39,10 @@ paper/main.pdf
 .DS_Store
 .vscode/
 .idea/
+
+# course materials and lecture transcripts — kept locally, not in repo
+KUL_MultilevelAnalysis_26/
+transcripts/
+
+# zip archives (e.g. Overleaf uploads)
+*.zip
