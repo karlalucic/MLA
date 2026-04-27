@@ -1,4 +1,4 @@
-# Multilevel Analysis Final Paper — KU Leuven (G0W07a, 2026)
+# Multilevel Analysis Final Paper — KU Leuven 2026
 
 Within-between multilevel analysis of GenAI exposure and political trust across European countries (ESS R6–R11, ILO–NASK 2025 occupation scores). See [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) for the full design.
 
@@ -40,4 +40,3 @@ See [`IMPLEMENTATION_PLAN.md` §3](IMPLEMENTATION_PLAN.md). Briefly:
 
 - **Course**: KU Leuven *Multilevel Analysis* (G0W07a), Spring 2026.
 - **Lecturer**: Prof. Dr. Alexander Schmidt-Catran.
-- **Submission**: ~12-page paper; deadlines 2026-06-20 (2nd exam period) or 2026-08-28 (3rd).
