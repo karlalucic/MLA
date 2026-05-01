@@ -48,21 +48,36 @@ def test_add_country_year_key_format():
 # build_trust_composite — handles sentinels and standardises per item
 # --------------------------------------------------------------------- #
 def test_build_trust_composite_drops_sentinels():
+    """Sentinel codes (>10) must be excluded from the per-item z-mean
+    that feeds the composite; the composite at a sentinel row must equal
+    the row mean of the remaining (non-sentinel) z-scored items."""
     df = pd.DataFrame({
-        "trstprl": [3, 5, 99, 7, 8],   # 99 sentinel
-        "trstlgl": [4, 5, 6, 88, 8],   # 88 sentinel
-        "stfdem":  [4, 4, 6, 7, 99],   # 99 sentinel
+        "trstprl": [3, 5, 99, 7, 8],   # 99 sentinel at row 2
+        "trstlgl": [4, 5, 6, 88, 8],   # 88 sentinel at row 3
+        "stfdem":  [4, 4, 6, 7, 99],   # 99 sentinel at row 4
         "essround": [1, 1, 1, 1, 1],
         "cntry":    ["A"] * 5,
     })
     out = build_trust_composite(df)
-    # Row 2 has trstprl=99 sentinel ⇒ that item is NaN; row mean uses the other two.
-    assert pd.isna(out.loc[2, "trustprl"]) if "trustprl" in out.columns else True
-    # Composite is finite for rows with at least one valid item; NaN where all NaN.
-    assert out["trust"].notna().sum() == 5  # at least one valid in each row
-    # Z-standardisation per item: pooled mean ≈ 0 across all valid rows.
-    composite_mean = out["trust"].dropna().mean()
-    assert abs(composite_mean) < 0.5  # not zero exactly because items have unequal Ns
+    # Composite is finite for rows with at least one valid item.
+    assert out["trust"].notna().sum() == 5
+    # Recompute the expected per-item z manually with the same valid-range
+    # rule (0..10) and confirm row 2 composite uses only trstlgl + stfdem.
+    def _z(s):
+        s = s.where(s.between(0, 10))
+        return (s - s.mean()) / s.std()
+    z_prl = _z(df["trstprl"])
+    z_lgl = _z(df["trstlgl"])
+    z_dem = _z(df["stfdem"])
+    # Row 2: trstprl is sentinel (NaN after coerce); composite = mean(z_lgl[2], z_dem[2]).
+    expected_row2 = pd.Series([z_lgl.iloc[2], z_dem.iloc[2]]).mean()
+    assert out["trust"].iloc[2] == pytest.approx(expected_row2)
+    # Row 3: trstlgl sentinel → composite = mean(z_prl[3], z_dem[3]).
+    expected_row3 = pd.Series([z_prl.iloc[3], z_dem.iloc[3]]).mean()
+    assert out["trust"].iloc[3] == pytest.approx(expected_row3)
+    # Row 4: stfdem sentinel → composite = mean(z_prl[4], z_lgl[4]).
+    expected_row4 = pd.Series([z_prl.iloc[4], z_lgl.iloc[4]]).mean()
+    assert out["trust"].iloc[4] == pytest.approx(expected_row4)
 
 
 def test_build_trust_composite_preserves_between_variance():

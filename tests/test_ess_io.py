@@ -25,6 +25,15 @@ from src.mla.ess_io import (
 # --------------------------------------------------------------------- #
 # Teaching panel: shape and columns we know
 # --------------------------------------------------------------------- #
+# The teaching DTA lives under KUL_MultilevelAnalysis_26/, which is gitignored.
+# When run in CI or a fresh clone the file is absent → skip.
+_COURSE_DTA_MISSING = not COURSE_STATA_PATH.exists()
+
+
+@pytest.mark.skipif(
+    _COURSE_DTA_MISSING,
+    reason="course DTA gitignored from repo (KUL_MultilevelAnalysis_26/R/Data/Stata/ESSrounds1to9.dta)",
+)
 def test_teaching_panel_shape_and_columns():
     df = load_teaching_panel(rounds=(6, 7, 8, 9))
     assert isinstance(df, pd.DataFrame)
@@ -35,6 +44,10 @@ def test_teaching_panel_shape_and_columns():
     assert set(df["essround"].unique()).issubset({6, 7, 8, 9})
 
 
+@pytest.mark.skipif(
+    _COURSE_DTA_MISSING,
+    reason="course DTA gitignored from repo",
+)
 def test_teaching_panel_round_filter_disjoint():
     df68 = load_teaching_panel(rounds=(6, 8))
     df79 = load_teaching_panel(rounds=(7, 9))
@@ -48,6 +61,10 @@ def test_teaching_panel_missing_file(tmp_path: Path):
         load_teaching_panel(path=bogus)
 
 
+@pytest.mark.skipif(
+    _COURSE_DTA_MISSING,
+    reason="course DTA gitignored from repo",
+)
 def test_harmonise_columns_renames_country():
     df = load_teaching_panel(rounds=(6,))
     out = harmonise_columns(df)

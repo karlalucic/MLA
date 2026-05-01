@@ -101,18 +101,24 @@ def country_year_aggregate_leave_one_out(
         loo[panel[value_col].isna()] = np.nan
         return loo.rename(out_col)
     # Weighted: x̄_(-i) = (Σ w·x − w_i·x_i) / (Σ w − w_i).
-    w = panel[weight_col].where(panel[weight_col].gt(0), other=np.nan)
-    wx = w * panel[value_col]
-    grouped = panel.assign(_w=w, _wx=wx).groupby(
+    # CRITICAL: gate weights on BOTH value-validity and weight-validity.
+    # Otherwise a respondent with NaN value but valid weight inflates the
+    # denominator while contributing nothing to the numerator, biasing
+    # LOO downward for every other respondent in the same cell.
+    valid = panel[value_col].notna() & panel[weight_col].notna() & panel[weight_col].gt(0)
+    w_eff = panel[weight_col].where(valid, other=0.0)
+    wx_eff = (panel[value_col].fillna(0.0) * w_eff)
+    grouped = panel.assign(_w=w_eff, _wx=wx_eff).groupby(
         [country_col, round_col], observed=True
     )
     sum_w = grouped["_w"].transform("sum")
     sum_wx = grouped["_wx"].transform("sum")
-    n_pos = grouped["_w"].transform(lambda s: s.notna().sum())
-    loo = (sum_wx - wx) / (sum_w - w)
+    n_pos = grouped["_w"].transform(lambda s: s.gt(0).sum())
+    denom = sum_w - w_eff
+    loo = (sum_wx - wx_eff) / denom
     loo[n_pos <= 1] = np.nan
-    loo[panel[value_col].isna()] = np.nan
-    loo[panel[weight_col].isna() | panel[weight_col].le(0)] = np.nan
+    loo[~valid] = np.nan
+    loo[denom.le(0)] = np.nan
     return loo.rename(out_col)
 
 

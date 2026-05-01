@@ -115,6 +115,32 @@ def test_loo_propagates_nan_value():
     assert pd.isna(loo.loc[0])
 
 
+def test_loo_weighted_ignores_nan_value_with_valid_weight():
+    """Regression: a row with NaN value but positive weight must NOT
+    inflate the LOO denominator for other rows in the same cell.
+
+    Synthetic cell = [(x=1, w=1), (x=NaN, w=100), (x=3, w=1)].
+    Row 0's LOO should be 3.0 (only row 2 contributes, since row 1 has
+    no value); the row-1 weight of 100 must be excluded entirely.
+    Pre-fix, the buggy code returned ~0.03 because w=100 inflated the
+    denominator while wx=NaN was dropped from the numerator.
+    """
+    panel = pd.DataFrame(
+        [
+            {"cntry": "A", "essround": 1, "x": 1.0, "w": 1.0},
+            {"cntry": "A", "essround": 1, "x": np.nan, "w": 100.0},
+            {"cntry": "A", "essround": 1, "x": 3.0, "w": 1.0},
+        ]
+    )
+    loo = country_year_aggregate_leave_one_out(panel, "x", weight_col="w")
+    # Row 0: only row 2 has a valid (value, weight); LOO = 3.0.
+    assert pytest.approx(loo.iloc[0]) == 3.0
+    # Row 1 has NaN value → its own LOO is undefined.
+    assert pd.isna(loo.iloc[1])
+    # Row 2: only row 0 contributes; LOO = 1.0.
+    assert pytest.approx(loo.iloc[2]) == 1.0
+
+
 # --------------------------------------------------------------------- #
 # within_between_decompose
 # --------------------------------------------------------------------- #

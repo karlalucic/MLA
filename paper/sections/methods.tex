@@ -59,17 +59,46 @@ All models are fit by REML using \texttt{statsmodels.MixedLM} (Python
 encoded by passing \texttt{groups="cntry"} for the L3 random
 intercept and a variance component
 \texttt{vc\_formula = \{"cy": "0 + C(country\_year)"\}} for the L2
-random intercept nested in L3. Model comparisons that differ in the
-fixed part are flagged for full ML refitting if a likelihood ratio
-test is reported; here I rely on Wald tests of single fixed
-coefficients and on the variance-component progression.
+random intercept nested in L3---the Python equivalent of the
+\texttt{lme4} formulation
+$y \sim \cdots + (1\,|\,\mathrm{cntry}) + (1\,|\,\mathrm{cntry}{:}\mathrm{essround})$
+used in the methodological literature
+\citep{BellJones2015,SchmidtCatranFairbrother2016}. Model
+comparisons that differ in the fixed part are flagged for full ML
+refitting if a likelihood ratio test is reported; here I rely on
+Wald tests of single fixed coefficients and on the
+variance-component progression.
+
+\paragraph{Convergence diagnostics.}
+Three classes of warning surface in the rerun outputs and are
+reported here for transparency. \emph{First}, the L2 country-year
+variance component sits near its boundary of zero from M2 onward,
+generating ``MLE on the boundary of the parameter space'' warnings
+for M2--M3b, M4 (in addition to its random-slope variance), M5,
+and M6. This is consistent with the small L2 VPC ($0.01$--$0.025$)
+and is benign for the substantive fixed-effect estimates; it does
+mean that any LR test on the L2 variance component would be
+boundary-distributed and would require the conventional halving of
+the nominal $p$-value to approximate a correct one-sided test
+\citep{SnijdersBosker2011}. \emph{Second}, the random-slope model
+M4 emits a ``Hessian not positive-definite'' warning at convergence,
+as do the M6 EPL-restricted model and the LOO and Drop-R10
+robustness reruns. Point estimates are produced and the headline
+within-vs-between pattern is stable across these reruns, but the
+variance-component standard errors and small L3 inferences in those
+specifications should be treated as approximate. \emph{Third}, no
+warnings appear for the empty model M0 or the L1-only model M1,
+both of which produce well-conditioned fits.
 
 \paragraph{Inference caveats.}
 With 30 L3 units, the asymptotic Wald-normal standard errors on L3
-coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are anti-conservative
-\citep{McNeishStapleton2016}. The implementation plan calls for
-re-estimating these via \texttt{pymer4}'s Kenward-Roger correction;
+coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are anti-conservative.
+\citet{McNeishStapleton2016} report nominal Type-I error rates of
+$15$--$25\%$ at the $\alpha=0.05$ target under Wald-normal inference
+with $\approx\!25$--$30$ Level-3 units, depending on the random-effects
+structure. The implementation plan calls for re-estimating these
+via \texttt{pymer4}'s Kenward-Roger correction \citep{Bates2014};
 that step is documented as a follow-up rather than completed here,
 and the L3 inferences in Section~\ref{sec:results} should be read
-with the qualification that their nominal $p$-values are likely
-slightly too small.
+with the qualification that their nominal $p$-values are
+\emph{potentially substantially} too small.

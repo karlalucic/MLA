@@ -80,12 +80,20 @@ Country-year macro covariates come from Eurostat: real GDP growth
 ages 15--74, both sexes), and HICP inflation
 (\texttt{prc\_hicp\_aind}). Each ESS round is paired with its modal
 fielding year (R6$\to$2012, R7$\to$2014, \ldots, R10$\to$2021,
-R11$\to$2023). Israel and Russia are not in Eurostat and so drop
-from the macro-controlled models via listwise deletion (4.9\% of
-the panel). The L3 institutional moderator is the OECD Employment
-Protection Legislation index, version 1, regular contracts, 2007
-baseline (pre-period for exogeneity); 23 of the 36 ESS countries
-are OECD members and have a non-missing value. Welfare-regime
+R11$\to$2023). Six countries drop from the macro-controlled models
+via listwise deletion: Israel and Russia are not in Eurostat at
+all; Albania, Ukraine, and Kosovo are partially covered (GDP only,
+no unemployment or HICP); and the United Kingdom is missing
+UK-coded observations in \texttt{une\_rt\_a} for the entire
+2010--2024 ESS panel period---a Brexit-era reporting gap that
+affects only this dataset (GDP and HICP for UK are present). I
+deliberately do not patch GB from non-Eurostat sources, since a
+country-specific patch would compromise the cross-country
+comparability of the macro panel; the wholesale source-swap
+alternative is left to future work. The L3 institutional moderator
+is the OECD Employment Protection Legislation index, version 1,
+regular contracts, 2007 baseline (pre-period for exogeneity); 23 of
+the 36 ESS countries are OECD members and have a non-missing value. Welfare-regime
 typology follows the Esping-Andersen tradition with a Western Balkans
 extension to the Eastern-European class.
 

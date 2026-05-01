@@ -57,23 +57,32 @@ read as an association \emph{within a multilevel structure}, not a
 causal effect.
 
 \paragraph{Limitations.}
-Three are worth flagging beyond the endogeneity caveat above.
-\emph{First}, the L2 country-year VPC of $0.022$ in M0 is at the
+Four are worth flagging beyond the endogeneity caveat above.
+\emph{First}, the L2 country-year VPC of $0.025$ in M0 is at the
 soft floor of where a within--between decomposition is well-powered
 to distinguish $\gamma_W$ from $\gamma_B$. The Wald rejection of
 equality is driven primarily by the precision of $\hat\gamma_W$
-(near-zero point estimate with reasonable standard error) rather
-than by a strong identifying signal in $\hat\gamma_W$.
-\emph{Second}, the leave-one-out attenuation of $\hat\gamma_B$ from
-$+11.24$ to $+5.44$ implies that the headline between-effect is
-inflated by the mechanical correlation between an individual's own
-exposure and the country-year average. The leave-one-out estimate
-is the conceptually cleaner one; future work should use it as the
-primary specification.
-\emph{Third}, three robustness avenues are deferred:
-the alternative occupation-exposure measures (Webb 2020, Felten
-2021, Felten 2023, Eloundou 2024), which require an
-ISCO-08$\leftrightarrow$SOC-2010 crosswalk and additional public
+(near-zero point estimate with a moderate standard error) and by
+the large magnitude of $\hat\gamma_B$, rather than by a strong
+identifying signal in $\hat\gamma_W$ itself.
+\emph{Second}, six countries drop from the M3a fitted sample because
+of harmonised macro coverage gaps in Eurostat: Israel and Russia
+are not covered at all, Albania, Ukraine, and Kosovo lack the
+unemployment and HICP series, and the United Kingdom is missing
+UK-coded observations in \texttt{une\_rt\_a} for the ESS panel
+period (a Brexit-era reporting gap). I rejected patching individual
+countries from non-Eurostat sources because that would compromise
+cross-country comparability of the macro panel; a wholesale OECD
+or World Bank source swap is left to future work.
+\emph{Third}, the leave-one-out aggregation gives
+$\hat\gamma_B = +10.43$, only modestly below the headline
+$+11.24$, and $\hat\gamma_W=+0.06$. The mechanical correlation
+between an individual's own exposure and the country-year mean
+inflates $\hat\gamma_B$ slightly but not substantially.
+\emph{Fourth}, three robustness avenues are deferred: the
+alternative occupation-exposure measures
+\citep{Webb2020,Felten2021,Felten2023,Eloundou2024}, which require
+an ISCO-08$\leftrightarrow$SOC-2010 crosswalk and additional public
 downloads; the Kenward-Roger correction on L3 standard errors via
 \texttt{pymer4}/\texttt{lmerTest}; and the multiple imputation of
 \texttt{hinctnta} missingness.

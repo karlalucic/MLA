@@ -99,7 +99,7 @@ def _jsonstat_to_long(payload: dict, value_name: str = "value") -> pd.DataFrame:
 
     rows: list[dict[str, Any]] = []
     if isinstance(values, dict):
-        items = ((int(k), v) for k, v in values.items())
+        items = ((int(k), v) for k, v in values.items() if v is not None)
     else:
         items = ((i, v) for i, v in enumerate(values) if v is not None)
     for flat_idx, val in items:

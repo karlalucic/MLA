@@ -2,27 +2,25 @@
 
 \subsection{Variance decomposition}\label{sec:results-vc}
 
-The empty model (M0) yields an L3 country ICC of $\rho_3=0.246$
-and an L2 country-year VPC of $\rho_2=0.022$. The L3 share is at the
-upper end of the range
-($0.15$--$0.25$) reported by \citet{SchmidtCatranFairbrother2016}
-for trust outcomes; the L2 share, while modest, is above the soft
-floor below which a within--between decomposition adds little to
-a pure country-FE specification. The L1 residual share of $0.732$
-sits inside the $0.70$--$0.85$ range conventional in pooled ESS
-trust models. The decomposition therefore supports the three-level
+On the M3a-common analysis sample ($N=165{,}969$, 30 countries), the
+empty model (M0) yields an L3 country ICC of $\rho_3=0.243$, an L2
+country-year VPC of $\rho_2=0.025$, and an L1 share of $0.732$. The
+L3 share sits inside the $0.15$--$0.25$ range reported by
+\citet{SchmidtCatranFairbrother2016} for European trust outcomes;
+the L2 share, while modest, is above the soft floor below which
+a within--between decomposition adds little to a pure country-FE
+specification. The decomposition therefore supports the three-level
 specification.
 
-Adding L1 controls (M1) explains 8\% of L1 residual variance and 17\%
-of L2 country-year variance, while leaving the L3 ICC essentially
-unchanged at $0.256$. Adding L2 macro covariates and round dummies
-(M2) explains a cumulative 58\% of L2 variance and 18\% of L3
-variance: the round dummies in particular absorb the global
-upward trend in trust between R6 and R11, leaving the L2 VPC at
-$0.011$ (cf. M0's $0.022$). The contrast between M3a (with round
-dummies) and M3b (without) in Section~\ref{sec:results-headline} is
-designed to surface the interpretive trade-off this absorption
-introduces.
+Adding L1 controls (M1) reduces L1 residual variance by $5\%$ and
+L2 country-year variance by $17\%$, while the L3 ICC drops marginally
+to $0.241$. Adding L2 macro covariates and round dummies (M2) brings
+the cumulative L2 variance reduction to $61\%$ and L3 to $13\%$:
+the round dummies in particular absorb the global upward trend in
+trust between R6 and R11, leaving the L2 VPC at $0.011$ (cf.\ M0's
+$0.025$). The contrast between M3a (with round dummies) and M3b
+(without) in Section~\ref{sec:results-headline} is designed to
+surface the interpretive trade-off this absorption introduces.
 
 Figure~\ref{fig:variance} visualises the variance decomposition
 across the M0$\to$M6 progression as a stacked bar. The L3 share
@@ -76,8 +74,28 @@ after the L1, L2, and Mundlak controls: Northern European countries
 Netherlands) cluster in the positive tail, while Eastern and
 Southern European countries (Bulgaria, Hungary, Greece) cluster in
 the negative tail. The M3a sample includes 30 of the 36 ESS
-countries (Israel and Russia are dropped via the macro listwise
-deletion).
+countries; six are dropped via macro listwise deletion: Israel and
+Russia are not in Eurostat at all, while Albania, Ukraine, and
+Kosovo lack the harmonised unemployment and HICP series, and the
+United Kingdom has no UK observations in Eurostat's annual
+unemployment dataset for the ESS panel period (a Brexit-era data
+gap discussed in Section~\ref{sec:data}).
+
+\paragraph{H3 (individual exposure).}
+The individual-level GenAI exposure coefficient
+$\hat\beta_{\mathrm{genai}}$ is small, positive, and statistically
+significant in M1 onward ($+0.015$, SE $0.002$). H3 predicted a
+\emph{negative} sign (the structural-grievance / loser-theory
+prediction); the data return the opposite. The composition channel
+through which individuals in AI-exposed occupations would
+\textit{themselves} report lower trust does not run as the
+single-country robot-exposure literature would predict. This sign
+reversal is small in magnitude---a fraction of a hundredth of a
+standard deviation per unit of standardised exposure---but
+substantively complements the within-between gap: the cross-sectional
+positive correlation between AI exposure and trust is structural
+(driven by what makes a country a high-exposure country) rather than
+experiential (running through individuals' direct exposure).
 
 \begin{figure}[!h]
   \centering
@@ -112,12 +130,27 @@ parallel, consistent with the null interaction.
 
 \subsection{Institutional moderation (H5)}
 
-M6 restricts to the 22 OECD ESS countries with a non-missing
-2007 EPL value. The within $\times$ EPL interaction is positive in
-sign ($+1.64$) but imprecisely estimated ($\mathrm{SE}\;1.44$,
-$p\approx 0.26$). With only 22 L3 units, identification of an L3
-moderator is intrinsically limited; H5 cannot be rejected nor
-supported.
+The OECD EPL\,v1 (2007) baseline covers 23 of the ESS countries
+(GB, IE, and the 21 continental, Nordic, Mediterranean, and
+Eastern-European OECD members listed in Table~\ref{tab:descriptives}
+notes); GB drops in M6 via the macro listwise deletion described
+above, leaving 22 L3 units in the fitted sample. The within $\times$
+EPL interaction is positive in sign ($+1.64$) but imprecisely
+estimated ($\mathrm{SE}\;1.44$, $p\approx 0.26$). With only 22 L3
+units, identification of an L3 moderator is intrinsically limited;
+H5 cannot be rejected nor supported.
+
+\paragraph{Note on the M6 education interaction.}
+On the OECD subsample, the within $\times$ ISCED interaction
+flips from the M5 null ($-0.142$, $p=0.275$) to a small but
+nominally significant negative ($-0.318$, $\mathrm{SE}\;0.141$,
+$p\approx 0.024$). The H4 conclusion is based on M5 because
+(a) the larger sample is identified on the full European panel,
+not the OECD-only subset; and (b) the M6 sample is selected on
+non-missing EPL\,v1, which correlates with regime type and labour
+market structure---making the M6 interaction a within-OECD
+finding that may not generalise. We report it for completeness
+in Table~\ref{tab:models} but treat M5 as the primary H4 test.
 
 \input{tables/tab2_models_m0_m6}
 
@@ -140,7 +173,7 @@ pattern is robust:
 \begin{itemize}
 \setlength\itemsep{2pt}
   \item Each trust item separately replicates the gap: $\hat\gamma_B
-        \in [11.0, 12.0]$ for \texttt{trstprl}, \texttt{trstlgl},
+        \in [11.0, 12.1]$ for \texttt{trstprl}, \texttt{trstlgl},
         and \texttt{stfdem} individually, with Mundlak Wald
         $p \leq 0.014$ in each case.
   \item Across the 30 country-leverage drops, $\hat\gamma_B$ ranges
@@ -155,11 +188,13 @@ pattern is robust:
         the cross-country pattern.
   \item Leave-one-out aggregation, which removes the mechanical
         correlation between an individual's own exposure and the
-        country-year mean, attenuates $\hat\gamma_B$ from $+11.24$
-        to $+5.44$. The within-country effect remains near zero
-        ($\hat\gamma_W=+0.51$, $\mathrm{SE}\;0.45$). The
-        attenuation is large enough that it is reported in the
-        main text rather than buried in an appendix.
+        country-year mean, gives
+        $\hat\gamma_B=+10.43$ ($p=0.004$) and
+        $\hat\gamma_W=+0.06$. The headline gap survives the LOO
+        construction with only modest attenuation in $\hat\gamma_B$
+        (an earlier specification with a denominator-counting bug
+        had reported a much larger attenuation; the corrected LOO
+        is reported here and in Table~\ref{tab:robustness}).
   \item A within-only fixed-effects benchmark
         (\texttt{linearmodels.PanelOLS} with country fixed effects,
         cluster-robust SEs) yields a coefficient on $\bar E_{ct}$ of

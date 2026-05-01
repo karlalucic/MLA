@@ -3,16 +3,16 @@
 \label{tab:robustness}
 \begin{tabular}{llll}
 \toprule
-check & gamma_w & gamma_b & wald_p \\
+Check & $\hat\gamma_W$ & $\hat\gamma_B$ & Wald $p$ \\
 \midrule
 R5 trstprl alone & 1.3826 & 11.2629 & 0.014 \\
 R5 trstlgl alone & -1.8302 & 12.0299 & 0.001 \\
 R5 stfdem alone & 0.5688 & 11.0145 & 0.0061 \\
-R6 country drop range (γ_B min/max) & [-0.348, 0.358] & [9.459, 12.243] & [0.001, 0.012] \\
+R6 country drop range ($\gamma_B$ min/max) & [-0.348, 0.358] & [9.459, 12.243] & [0.001, 0.012] \\
 R12 drop R10 & -0.8695 & 10.5166 & 0.0014 \\
 R-V vintage-static & -0.2357 & 13.4271 & 0.0003 \\
-R4 leave-one-out & 0.5084 & 5.4413 & 0.0085 \\
-R7 PanelOLS β on exposure_ct (within-only FE) & -0.1887 & NaN & NaN \\
+R4 leave-one-out & 0.0633 & 10.4259 & 0.0036 \\
+R7 PanelOLS $\beta$ on \texttt{exposure\_ct} (within-only FE) & -0.1887 & NaN & NaN \\
 \bottomrule
 \end{tabular}
 \end{table}

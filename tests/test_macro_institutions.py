@@ -94,6 +94,17 @@ def test_jsonstat_to_long_skips_none_in_list():
     assert len(df) == 4  # two None cells dropped
 
 
+def test_jsonstat_to_long_skips_none_in_dict():
+    """Regression: dict-form `value` payloads must drop None entries the
+    same way list-form does. Pre-fix the dict branch lacked the filter
+    and emitted a NaN row instead of silently dropping the cell."""
+    payload = _toy_jsonstat_payload()
+    payload["value"] = {"0": 1.0, "1": None, "2": 2.0, "3": 3.0, "4": None, "5": 4.0}
+    df = _jsonstat_to_long(payload, value_name="x")
+    assert len(df) == 4
+    assert df["x"].isna().sum() == 0
+
+
 # --------------------------------------------------------------------- #
 # Institutions: EPL + welfare regime
 # --------------------------------------------------------------------- #
