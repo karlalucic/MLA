@@ -2,7 +2,7 @@
 # On macOS:
 #   brew install --cask basictex   # ~100 MB, includes latexmk and bibtex
 #   sudo tlmgr update --self && sudo tlmgr install booktabs natbib hyperref \
-#                                              microtype titlesec geometry
+#                                              microtype titlesec geometry makecell
 # Or upload paper/ to Overleaf to compile online without installing TeX Live.
 
 MAIN = main

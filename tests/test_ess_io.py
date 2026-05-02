@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +9,6 @@ import pyreadstat
 import pytest
 
 from src.mla.ess_io import (
-    CORE_COLUMNS,
     TEACHING_COLUMNS,
     COURSE_STATA_PATH,
     find_round_file,

@@ -177,7 +177,6 @@ def merge_country_year_to_panel(
         raise ValueError(
             "country-year frame has duplicate (country, round) keys"
         )
-    cols = list(cy.columns)
     if cy_value_cols is not None:
         cy = cy[[country_col, round_col, *cy_value_cols]]
     n_pre = len(panel)

@@ -199,7 +199,6 @@ def test_mundlak_wald_synthetic_inequality_rejected():
         c_mean_x = rng.normal(0, 1.0)
         for r in range(1, 5):
             within = rng.normal(0, 0.3)
-            x_ct = c_mean_x + within
             for _ in range(50):
                 # Different slopes — within=0.2, between=1.4. Wald should reject.
                 y = 0.2 * within + 1.4 * c_mean_x + between + rng.normal(0, 1.0)
