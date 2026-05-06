@@ -44,8 +44,7 @@ def test_ilo_nask_shape_and_columns():
     reason="ILO–NASK xlsx not yet downloaded",
 )
 def test_ilo_nask_published_summary_stats():
-    """Sanity check against the plan §2 published statistics:
-    2023 mean 0.30 / sd ~0.16; 2025 mean 0.29 / sd ~0.14."""
+    """Sanity check against the published ILO-NASK score distribution."""
     s = load_ilo_nask_scores()
     assert abs(s["score_2023"].mean() - 0.30) < 0.05
     assert abs(s["score_2025"].mean() - 0.29) < 0.05
@@ -113,8 +112,8 @@ def test_assign_vintage_score_custom_static_vintage():
     assert (matched["genai_i_static"] == 0.50).all()
 
 
-def test_vintage_for_round_table_matches_plan():
-    """Plan §2: 2023 GBB for R6–R10, 2025 ILO–NASK for R11."""
+def test_vintage_for_round_table_matches_analysis_rule():
+    """R6-R10 use 2023 scores; R11 uses 2025 scores."""
     for r in range(6, 11):
         assert VINTAGE_FOR_ROUND[r] == 2023, f"R{r} should use 2023 vintage"
     assert VINTAGE_FOR_ROUND[11] == 2025
@@ -131,7 +130,7 @@ def test_report_score_coverage_shape():
 
 
 # --------------------------------------------------------------------- #
-# Robustness path is stubbed for Day 2 Track B
+# Alternative exposure measures require an ISCO-SOC crosswalk.
 # --------------------------------------------------------------------- #
 def test_load_robustness_scores_not_implemented():
     with pytest.raises(NotImplementedError):

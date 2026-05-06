@@ -1,6 +1,6 @@
 """statsmodels.MixedLM wrappers for the 3-level pooled cross-national design.
 
-Implements the M0 → M6 progression from :doc:`/IMPLEMENTATION_PLAN` §6:
+The main paper estimates the following model sequence:
 
 * M0 — empty 3-level intercept only.
 * M1 — M0 + L1 fixed effects.
@@ -47,13 +47,11 @@ def build_trust_composite(
     globally) to put the three on a common scale, then averaged. Sentinel
     codes (>10) are coerced to NaN first.
 
-    NB: the plan §5 wording ("z-standardise per round-country") would
-    sweep out exactly the L2 and L3 variance the multilevel model is
-    meant to estimate; we standardise per-item globally instead so the
-    between-country and between-round variance is preserved. ICC at L3
-    on trust composites in the plan's reference works (Schmidt-Catran &
-    Fairbrother) is ~0.15–0.25, which is consistent with global
-    standardisation.
+    Standardising within each country-year would set every country-year
+    item mean to zero by construction, removing the L2 and L3 trust
+    differences the multilevel model is designed to explain. Global
+    per-item standardisation preserves those differences while putting
+    the three items on comparable units.
     """
     out = df.copy()
     lo, hi = valid_range

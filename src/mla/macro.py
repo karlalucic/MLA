@@ -5,7 +5,7 @@ Uses the public REST API at
 (no authentication required). Returns long-format frames keyed on
 ``(cntry, year)`` ready to merge onto the ESS panel.
 
-The three indicators selected match :doc:`/IMPLEMENTATION_PLAN` §5:
+The analysis uses three annual country-year controls:
 
 * :func:`fetch_gdp_growth`     — real GDP growth rate (% change on prev. year)
 * :func:`fetch_unemployment`   — annual unemployment rate (% of active pop.)

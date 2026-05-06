@@ -1,15 +1,16 @@
-"""AI / GenAI occupation-exposure score loaders + ESS merge helpers.
+"""AI / GenAI occupation-exposure score loaders and ESS merge helpers.
 
-Primary measure (per :doc:`/IMPLEMENTATION_PLAN`): **ILO–NASK 2025**
-(Gmyrek et al. 2025), ISCO-08 4-digit native, two vintages:
+The primary exposure measure is the ILO-NASK occupation score from
+Gmyrek et al. (2025), keyed directly on ISCO-08 4-digit occupations and
+available in two score vintages:
 
 * ``score_2023`` — applied to ESS R6–R10 (pre-GPT-4 era).
 * ``score_2025`` — applied to ESS R11 (post-GPT-4 era).
 
-Robustness measures (Section 7): Webb 2020, Felten 2021 (AIOE), Felten
-2023 (GenAI), Eloundou 2024 (GPT-task exposure). These require an
-ISCO-08 ↔ SOC-2010 crosswalk; loaders are stubbed here and fleshed out
-in :mod:`mla.crosswalk` (Day 2 Track B).
+Alternative exposure measures such as Webb (2020), Felten et al.
+(2021/2023), and Eloundou et al. (2024) are SOC-keyed and require an
+ISCO-08 to SOC-2010 crosswalk. They are not implemented in this
+repository's reproducible pipeline.
 """
 
 from __future__ import annotations
@@ -25,8 +26,8 @@ SCORES_DIR = REPO_ROOT / "data" / "raw" / "scores"
 
 ILO_NASK_XLSX = SCORES_DIR / "Final_Scores_ISCO08_Gmyrek_et_al_2025.xlsx"
 
-# Vintage assignment rule from §2 of the implementation plan.
-# Each ESS round → which ILO–NASK score vintage to use.
+# ESS round -> ILO-NASK score vintage. R6-R10 use the 2023 score to
+# represent the pre-GPT-4 period; R11 uses the 2025 score.
 VINTAGE_FOR_ROUND: dict[int, int] = {
     6: 2023,
     7: 2023,
@@ -158,24 +159,19 @@ def report_score_coverage(panel: pd.DataFrame, score_col: str = "genai_i") -> pd
 
 
 # --------------------------------------------------------------------- #
-# Robustness: Webb 2020, Felten 2021/2023, Eloundou 2024  (stubs)
+# Alternative exposure measures requiring an ISCO-SOC crosswalk.
 # --------------------------------------------------------------------- #
 def load_robustness_scores(
     measures: Iterable[str] = ("webb", "aioe", "felten_genai", "eloundou"),
 ) -> pd.DataFrame:
     """Load robustness exposure measures keyed on ISCO-08 4-digit.
 
-    NOT YET IMPLEMENTED — Day 2 Track B will:
-
-    1. Download Webb (2020), Felten et al. 2021 (AIOE), Felten et al.
-       2023 (GenAI), and Eloundou et al. 2024 from their respective
-       public sources (each is SOC-keyed).
-    2. Apply the ILO ISCO-08 ↔ SOC-2010 crosswalk
-       (:mod:`mla.crosswalk`).
-    3. Aggregate to ISCO-08 4-digit using the crosswalk's many-to-many
-       weights.
+    These measures are not part of the submitted replication pipeline.
+    Implementing them requires downloading SOC-keyed source files,
+    applying an ISCO-08 <-> SOC-2010 crosswalk, and aggregating many-to-
+    many matches to ISCO-08 4-digit occupations.
     """
     raise NotImplementedError(
-        "Robustness loaders are scheduled for Day 2 Track B. "
-        "Track A delivers ILO–NASK only."
+        "Alternative SOC-keyed exposure measures are not implemented in "
+        "this repository. The implemented primary measure is ILO-NASK."
     )

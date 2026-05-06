@@ -1,6 +1,6 @@
 # Multilevel Analysis Final Paper — KU Leuven 2026
 
-Within-between multilevel analysis of GenAI exposure and political trust across European countries (ESS R6–R11, ILO–NASK 2025 occupation scores). See [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) for the full design.
+Within-between multilevel analysis of GenAI exposure and political trust across European countries (ESS R6-R11, ILO-NASK 2025 occupation scores).
 
 ## Replication
 
@@ -26,8 +26,6 @@ cd paper && latexmk -pdf main.tex
 If the ESS API beta does not yet support SAV downloads, place R10 and R11 SAV files manually in `data/raw/ess/`; the loader auto-detects and skips the API path.
 
 ## Project layout
-
-See [`IMPLEMENTATION_PLAN.md` §3](IMPLEMENTATION_PLAN.md). Briefly:
 
 - `paper/` — LaTeX sources for the 12-page paper.
 - `notebooks/` — analysis notebooks `00_…` through `09_…`.

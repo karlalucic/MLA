@@ -30,7 +30,8 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.5",
 ]
-# pymer4 deferred to Day 5 (Kenward-Roger SEs); requires R + lme4 + lmerTest installed.
+# Optional R-backed mixed-model bridge for Kenward-Roger SE checks.
+# Requires a working R installation with lme4 and lmerTest.
 pymer4 = [
     "pymer4>=0.8",
 ]

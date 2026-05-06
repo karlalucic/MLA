@@ -96,9 +96,9 @@ coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are anti-conservative.
 \citet{McNeishStapleton2016} report nominal Type-I error rates of
 $15$--$25\%$ at the $\alpha=0.05$ target under Wald-normal inference
 with $\approx\!25$--$30$ Level-3 units, depending on the random-effects
-structure. The implementation plan calls for re-estimating these
-via \texttt{pymer4}'s Kenward-Roger correction \citep{Bates2014};
-that step is documented as a follow-up rather than completed here,
-and the L3 inferences in Section~\ref{sec:results} should be read
-with the qualification that their nominal $p$-values are
-\emph{potentially substantially} too small.
+structure. A Kenward-Roger check via \texttt{pymer4}
+\citep{Bates2014} would be a natural follow-up, but is not part of
+the submitted replication pipeline. The L3 inferences in
+Section~\ref{sec:results} should therefore be read with the
+qualification that their nominal $p$-values are \emph{potentially
+substantially} too small.

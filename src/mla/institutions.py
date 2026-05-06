@@ -1,7 +1,8 @@
-"""L3 country-level institutional variables: EPL_v1 (pre-period) + welfare regime.
+"""L3 country-level institutional variables: EPL_v1 and welfare regime.
 
-Both are time-invariant in the analysis (per :doc:`/IMPLEMENTATION_PLAN`
-§5: pre-period for exogeneity). Embedded as in-code tables because:
+Both variables are time-invariant in the analysis. EPL is fixed at its
+2007 pre-period value so it predates the ESS exposure window. The tables
+are embedded in code because:
 
 * EPL_v1 — published OECD figures, ~30 OECD members; small, widely cited.
 * Welfare-regime classification — Esping-Andersen tradition, hand-coded.
@@ -19,10 +20,9 @@ import pandas as pd
 # --------------------------------------------------------------------- #
 # OECD EPL_v1 (regular contracts), individual dismissals, 2007 baseline
 # --------------------------------------------------------------------- #
-# Pre-2008 baseline so the index pre-dates the AI exposure period and
-# satisfies the §2 "pre-period for exogeneity" requirement. Values from
-# the OECD Employment Protection Database, Version 1 (the long-running
-# series), 2007 vintage, scale 0–6 (higher = more strict).
+# Pre-2008 baseline so the index predates the AI exposure period.
+# Values are from the OECD Employment Protection Database, Version 1,
+# 2007 vintage, scale 0-6 (higher = more strict).
 EPL_V1_2007: dict[str, float] = {
     # Continental / Conservative-corporatist
     "AT": 2.37, "BE": 1.73, "CH": 1.60, "DE": 2.85, "FR": 2.39, "NL": 2.72,
@@ -53,11 +53,10 @@ def epl_v1_table() -> pd.DataFrame:
 # --------------------------------------------------------------------- #
 # Welfare-regime classification (Esping-Andersen + extensions)
 # --------------------------------------------------------------------- #
-# Five-class typology that matches the plan §5:
-#   social-democratic, conservative-corporatist, liberal,
-#   mediterranean, eastern-european.
-# Hand-coded. Western Balkans assigned to eastern-european following the
-# Cerami/Vanhuysse (2009) extension; Cyprus to mediterranean.
+# Five-class welfare-state typology used as a country-level control:
+# social-democratic, conservative-corporatist, liberal, mediterranean,
+# and eastern-european. Western Balkans are assigned to eastern-european
+# following the Cerami/Vanhuysse extension; Cyprus is mediterranean.
 WELFARE_REGIME: dict[str, str] = {
     # Social-democratic
     "DK": "social-democratic", "FI": "social-democratic",
