@@ -44,5 +44,9 @@ paper/main.pdf
 KUL_MultilevelAnalysis_26/
 transcripts/
 
+# internal explainer / review docs — kept locally, not in repo
+PAPER_EXPLANATION.md
+AUDIT_REPORT_*.md
+
 # zip archives (e.g. Overleaf uploads)
 *.zip
