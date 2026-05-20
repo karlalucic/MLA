@@ -792,7 +792,7 @@ So the model uses random intercepts.
 The empty model has no predictors:
 
 ```text
-y_ict = gamma_000 + u_0c + v_0ct + e_ict
+y_ict = gamma_000 + v_0c + u_0ct + e_ict
 ```
 
 where:
@@ -801,8 +801,8 @@ where:
 |---|---|
 | `y_ict` | trust for individual i in country c at time t |
 | `gamma_000` | grand mean trust |
-| `u_0c` | country random intercept |
-| `v_0ct` | country-year random intercept |
+| `v_0c` | country random intercept |
+| `u_0ct` | country-year random intercept |
 | `e_ict` | individual residual |
 
 In plain language:
@@ -820,8 +820,8 @@ The model estimates three variances:
 
 | Variance | Level | Meaning |
 |---|---|---|
-| `sigma_u0_sq` | L3 country | how much countries differ |
-| `sigma_v0_sq` | L2 country-year | how much country-years differ within countries |
+| `sigma_u0_sq` | L3 country in the Python code; written as `sigma^2_v0` in the paper to match the course notation | how much countries differ |
+| `sigma_v0_sq` | L2 country-year in the Python code; written as `sigma^2_u0` in the paper to match the course notation | how much country-years differ within countries |
 | `sigma_e_sq` | L1 individual | how much individuals differ within country-years |
 
 ### ICC and VPC

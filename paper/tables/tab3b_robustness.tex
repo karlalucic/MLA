@@ -1,18 +1,23 @@
 \begin{table}
-\caption{Robustness battery for the M3a within-between specification.}
+\centering
+\caption{Robustness battery for the M3a within--between specification. Each cell reports $\hat\gamma_W$, $\hat\gamma_B$, and the Mundlak Wald $p$-value. Em-dashes mark statistics the check does not produce (e.g.\ the within-only fixed-effects benchmark has no between-coefficient).}
 \label{tab:robustness}
-\begin{tabular}{llll}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
 \toprule
 Check & $\hat\gamma_W$ & $\hat\gamma_B$ & Wald $p$ \\
 \midrule
-R5 trstprl alone & 1.3826 & 11.2629 & 0.014 \\
-R5 trstlgl alone & -1.8302 & 12.0299 & 0.001 \\
-R5 stfdem alone & 0.5688 & 11.0145 & 0.0061 \\
-R6 country drop range ($\gamma_B$ min/max) & [-0.348, 0.358] & [9.459, 12.243] & [0.001, 0.012] \\
-R12 drop R10 & -0.8695 & 10.5166 & 0.0014 \\
-R-V vintage-static & -0.2357 & 13.4271 & 0.0003 \\
-R4 leave-one-out & 0.0633 & 10.4259 & 0.0036 \\
-R7 PanelOLS $\beta$ on \texttt{exposure\_ct} (within-only FE) & -0.1887 & NaN & NaN \\
+Single item: \texttt{trstprl}                          & 1.383 & 11.263 & 0.014 \\
+Single item: \texttt{trstlgl}                          & $-1.830$ & 12.030 & 0.001 \\
+Single item: \texttt{stfdem}                           & 0.569 & 11.014 & 0.006 \\
+Country drop range (min/max)                           & $[-0.348,\,0.358]$ & $[9.459,\,12.243]$ & $[0.001,\,0.012]$ \\
+Drop ESS R10 (COVID-disrupted)                         & $-0.870$ & 10.517 & 0.001 \\
+Vintage-static (2025 scores throughout)                & $-0.236$ & 13.427 & $<0.001$ \\
+Leave-one-out cell aggregation                         & 0.063 & 10.426 & 0.004 \\
+Within-only FE benchmark (\texttt{PanelOLS})           & $-0.189$ & --- & --- \\
 \bottomrule
 \end{tabular}
+}%
 \end{table}

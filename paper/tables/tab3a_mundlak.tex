@@ -1,14 +1,19 @@
 \begin{table}
-\caption{Mundlak Wald test of $\gamma_W = \gamma_B$ across the M3a--M5 specifications.}
+\centering
+\caption{Mundlak Wald test of $H_0:\gamma_W=\gamma_B$ across specifications M3a--M5. All tests are $\chi^2(1)$.}
 \label{tab:mundlak}
-\begin{tabular}{lrrrrrrr}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
 \toprule
-Model & $\hat\gamma_W$ & $\hat\gamma_B$ & Diff & SE(diff) & $\chi^2$ & df & $p$ \\
+Model & $\hat\gamma_W$ & $\hat\gamma_B$ & $\hat\gamma_W-\hat\gamma_B$ & SE(diff) & $\chi^2$ & $p$ \\
 \midrule
-M3a & 0.023 & 11.239 & -11.215 & 3.608 & 9.664 & 1.000 & 0.002 \\
-M3b & 1.459 & 11.168 & -9.709 & 3.627 & 7.167 & 1.000 & 0.007 \\
-M4 & 0.039 & 11.180 & -11.141 & 2.596 & 18.416 & 1.000 & 0.000 \\
-M5 & 0.204 & 10.488 & -10.285 & 3.233 & 10.117 & 1.000 & 0.001 \\
+M3a & 0.023 & 11.239 & $-11.215$ & 3.608 & 9.664 & 0.002 \\
+M3b & 1.459 & 11.168 & $-9.709$ & 3.627 & 7.167 & 0.007 \\
+M4  & 0.039 & 11.180 & $-11.141$ & 2.596 & 18.416 & $<0.001$ \\
+M5  & 0.204 & 10.488 & $-10.285$ & 3.233 & 10.117 & 0.001 \\
 \bottomrule
 \end{tabular}
+}%
 \end{table}

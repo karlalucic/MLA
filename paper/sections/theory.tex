@@ -1,78 +1,87 @@
 \section{Theory and hypotheses}\label{sec:theory}
 
-Three literatures converge on the question of whether AI exposure
-affects institutional trust.
+Three literatures jointly motivate the analysis: performance theories of
+political trust, structural-grievance accounts of dislocation, and the
+empirical occupation-exposure tradition. Each contributes a distinct
+prediction about the direction of the AI-exposure effect on
+institutional trust, and the three predictions partly conflict. The
+within--between specification used here is what allows the data to
+adjudicate between them.
 
-\paragraph{Performance theories of trust.}
-\citet{Hetherington1998} and \citet{vanderMeer2017} argue that
-trust in political institutions responds to perceived institutional
-performance, including macroeconomic and structural conditions.
-A technological shock that reduces the perceived ability of
-institutions to deliver economic security---through job destruction
-or through visible obsolescence of policy instruments---should
-therefore reduce trust.
+\paragraph{Institutional performance and trust.}
+\citet{Hetherington1998} and \citet{vanderMeer2017} argue that political
+trust responds to \emph{perceived institutional performance}, including
+how well institutions appear to manage macroeconomic and structural
+shocks. A technological shock that visibly weakens an institution's
+capacity to deliver economic security---through job destruction, sectoral
+churn, or obsolete policy instruments---should therefore lower trust on
+average. The account is symmetric: where active labour-market policy,
+retraining, or strong dismissal protection appear to absorb the shock,
+trust can hold or even rise.
 
-\paragraph{Structural-economic-grievance accounts.}
-\citet{GidronHall2017} and \citet{Kurer2020} extend the performance
-account by specifying the mechanism: technological change produces
+\paragraph{Structural grievance.}
+\citet{GidronHall2017} and \citet{Kurer2020} sharpen the performance
+account into a compositional mechanism: technological change creates
 labour-market losers, and losers re-route their political behaviour
-through grievance. In the trust outcome the implication is that
-individuals in occupations more exposed to substituting technologies
-should report lower institutional trust net of compositional controls.
+through grievance. The implication for trust is individual-level:
+\emph{respondents} in occupations more exposed to substitution should
+report lower trust, conditional on country context.
 
-\paragraph{Robot exposure and political behaviour.}
-The empirical literature on automation and political outcomes is
-dominated by single-country studies of \emph{robot} exposure.
-\citet{ColantoneStanig2018,AnelliColantoneStanig2021} document that
-local-labour-market robot exposure predicts populist voting in
-Western Europe; \citet{FreyBergerChen2018} report similar patterns for
-the United States. The mechanism in this literature is broadly
-consistent with structural grievance.
+\paragraph{Exposure measures and political behaviour.}
+The empirical occupation-exposure literature is dominated by
+within-country designs. Trade-shock studies use regional import
+competition (\citealt{ColantoneStanig2018} for Brexit). Automation
+studies use individual robot exposure
+(\citealt{AnelliColantoneStanig2021} for Western Europe;
+\citealt{FreyBergerChen2018} for U.S.\ counties). \citet{AcemogluRestrepo2020}
+ground the labour-market mechanism in U.S.\ wage and employment data.
+These designs identify effects from \emph{between-region within-country}
+variation in exposure---the within-country margin of a multilevel model.
+What they do not show is whether the cross-national pattern carries the
+same sign.
 
 \paragraph{Contribution.}
-The paper extends this tradition along three margins. (i) It substitutes
-the manufacturing-biased robot exposure measures for the
-white-collar/services-biased ILO--NASK GenAI exposure score
-\citep{Gmyrek2025}, which is ISCO-08 4-digit native and admits a
-2023$\to$2025 vintage shift that injects capability-driven
-within-country time variation in $E_o$. (ii) It pools cross-national
-data and applies the within--between specification of
-\citet{BellJones2015} and \citet{SchmidtCatranFairbrother2016} so the
-between-country level effect $\gamma_B$ and the within-country effect
-$\gamma_W$ are estimated separately rather than constrained to be equal.
-(iii) It specifies ex ante an underspecified-direction education-moderation
-test that distinguishes a substitution reading (more-educated
-respondents react more strongly to within-country exposure shifts) from
-a curator reading (less strongly) from a precise null (no moderation).
+This paper extends the tradition along three margins. \emph{First}, it
+substitutes a manufacturing-biased robot measure for the
+white-collar-leaning ILO--NASK GenAI exposure score \citep{Gmyrek2025},
+which is ISCO-08 4-digit native and carries a 2023$\to$2025
+capability-vintage shift. Because that shift is common to all countries,
+it is absorbed by the round dummies and does not by itself identify the
+within-country slope; the within variation that survives detrending is
+the smaller, country-specific occupational recomposition.
+\emph{Second}, it pools cross-national data and applies the within--between
+specification \citep{BellJones2015,SchmidtCatranFairbrother2016} so that
+the between- and within-country slopes are estimated separately rather
+than constrained to be equal. \emph{Third}, it pre-specifies an
+education-moderation test with two competing signed predictions and a
+precise null, treating a tight null as theoretically informative.
 
 \paragraph{Hypotheses.}
 \begin{description}
 \setlength\itemsep{2pt}
   \item[H1 (between).] Across countries, higher mean AI exposure
-    $\bar E_c$ is associated with lower mean institutional trust:
-    $\gamma_B < 0$.
-  \item[H2 (within).] Within countries, increases in AI exposure
-    $(E_{ct}-\bar E_c)$ erode institutional trust: $\gamma_W < 0$.
-  \item[H2a (decomposition).] $\gamma_W \neq \gamma_B$. Tested via
-    a Mundlak Wald.
+    $\bar E_c$ predicts lower mean institutional trust:
+    $\gamma_B < 0$. Predicted by structural grievance if between-country
+    variation in exposure tracks the size of the loser pool.
+  \item[H2 (within).] Within countries, increases in exposure
+    $(E_{ct}-\bar E_c)$ erode trust: $\gamma_W < 0$. Predicted by the
+    performance account when institutions visibly fail to absorb the
+    shock.
+  \item[H2a (decomposition).] $\gamma_W \neq \gamma_B$: the
+    cross-sectional and longitudinal margins answer different questions.
+    Tested via the Mundlak Wald.
   \item[H3 (compositional).] Individuals in AI-exposed occupations
     report lower trust net of country context:
-    $\beta_{\mathrm{genai}} < 0$.
+    $\beta_{\mathrm{genai}} < 0$. The classic structural-grievance
+    prediction at the individual level.
   \item[H4.] The within-country exposure effect is moderated by
-    individual education. Direction is theoretically
-    underspecified; the paper evaluates three competing
-    outcomes:
-    \begin{description}\setlength\itemsep{1pt}
-      \item[H4a (substitution).] Higher-educated respondents react
-        more strongly: negative interaction.
-      \item[H4b (curator).] Higher-educated respondents react less
-        strongly: positive interaction.
-      \item[H4$_0$ (null).] No moderation; an apparent education
-        gradient is compositional. A precise null falsifies both
-        substitution and curator framings.
-    \end{description}
-  \item[H5 (institutional moderation).] The within-effect is
-    attenuated where employment-protection legislation is stronger:
-    positive coefficient on
-    $\mathrm{EPL}_c \times (E_{ct}-\bar E_c)$.
+    education. Direction is theoretically underspecified:
+    H4a (substitution) predicts a \emph{negative} interaction
+    (higher-educated workers react more, since GenAI substitutes their
+    cognitive tasks); H4b (curator) predicts a \emph{positive} one
+    (higher-educated workers move into oversight and curator roles
+    that complement AI); H4$_0$ predicts no moderation.
+  \item[H5 (institutional moderation).] Stronger employment-protection
+    legislation attenuates the within-effect:
+    \emph{positive} coefficient on $\mathrm{EPL}_c \times (E_{ct}-\bar E_c)$.
 \end{description}

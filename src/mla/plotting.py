@@ -74,12 +74,14 @@ def caterpillar_country_intercepts(
     *,
     figsize: tuple[float, float] = (6, 8),
 ) -> plt.Figure:
-    """Caterpillar of country random intercepts (BLUPs) ± 95% CI from a fit.
+    """Ranked dot plot of country random intercepts (empirical-Bayes BLUPs).
 
     Pulls ``result.random_effects`` (dict country → Series of BLUPs) and
-    the conditional variance from ``result.cov_re``. CI uses
-    1.96·sqrt(diag(cov_re)) as a flat envelope (statsmodels' MixedLM
-    doesn't expose per-cluster posterior SEs).
+    plots the posterior means ranked low-to-high. No per-country error
+    bars are drawn: ``statsmodels.MixedLM`` does not expose cluster-specific
+    conditional variances, and the single estimated ``sigma_v0`` would make
+    any envelope identical across countries (hence uninformative). The
+    spread of the points themselves is the quantity of interest.
     """
     res_dict = result.random_effects
     rows = [
@@ -87,20 +89,18 @@ def caterpillar_country_intercepts(
         for cntry, blups in res_dict.items()
     ]
     df = pd.DataFrame(rows).sort_values("intercept").reset_index(drop=True)
-    sigma = float(np.sqrt(np.asarray(result.cov_re)[0, 0]))
-    half_ci = 1.96 * sigma  # crude flat envelope; documented limitation
 
     fig, ax = plt.subplots(figsize=figsize)
     y = np.arange(len(df))
-    ax.errorbar(
-        df["intercept"], y, xerr=half_ci, fmt="o",
-        color="black", ecolor="grey", elinewidth=0.6, markersize=3, capsize=2,
-    )
+    # stems to the grand mean to read sign/magnitude at a glance
+    ax.hlines(y, 0, df["intercept"], color="grey", linewidth=0.5, zorder=1)
+    ax.scatter(df["intercept"], y, color="black", s=14, zorder=2)
     ax.axvline(0, color="C3", linestyle="--", linewidth=0.8)
     ax.set_yticks(y)
     ax.set_yticklabels(df["cntry"], fontsize=8)
+    ax.set_ylim(-0.5, len(df) - 0.5)
     ax.set_xlabel("country random intercept (BLUP) on standardised trust composite")
-    ax.set_title("Caterpillar plot — between-country trust heterogeneity",
+    ax.set_title("Between-country trust heterogeneity — ranked country BLUPs (M3a)",
                  fontsize=10)
     fig.tight_layout()
     return fig

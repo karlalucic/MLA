@@ -1,104 +1,101 @@
 \section{Methods}\label{sec:methods}
 
 \paragraph{Three-level model.}
-Individuals $i$ are nested in country-years $(c,t)$, which are
-themselves nested in countries $c$. The empty model is
+Individuals $i$ are nested in country-years $(c,t)$, which are nested
+in countries $c$. The empty model M0 partitions trust into three
+mutually independent random components:
 \begin{equation}
-y_{ict} \;=\; \gamma_{000} + u_{0c} + v_{0(c,t)} + e_{ict},
-\quad u_{0c}\!\sim\!N(0,\sigma^2_{u_0}),\;
-v_{0(c,t)}\!\sim\!N(0,\sigma^2_{v_0}),\;
-e_{ict}\!\sim\!N(0,\sigma^2_e).
+y_{ict} \;=\; \gamma_{000} \;+\; v_{0c} \;+\; u_{0(c,t)} \;+\; e_{ict},
+\quad
+\begin{aligned}
+v_{0c} &\sim N(0,\sigma^{2}_{v_0}), \\
+u_{0(c,t)} &\sim N(0,\sigma^{2}_{u_0}), \\
+e_{ict} &\sim N(0,\sigma^{2}_e).
+\end{aligned}
 \label{eq:m0}
 \end{equation}
-Variance is decomposed into the L3 country share
-$\rho_3 = \sigma^2_{u_0}/\sigma^2_{\mathrm{tot}}$ (the intraclass
-correlation), the L2 country-year share
-$\rho_2 = \sigma^2_{v_0}/\sigma^2_{\mathrm{tot}}$ (the
-variance-partition coefficient), and the L1 individual share
-$\rho_1$, with $\sigma^2_{\mathrm{tot}} = \sigma^2_{u_0}+\sigma^2_{v_0}+\sigma^2_e$.
+The variance shares of the three levels are
+\[
+\rho_{3} = \frac{\sigma^{2}_{v_0}}{\sigma^{2}_{\mathrm{tot}}},
+\quad
+\rho_{2} = \frac{\sigma^{2}_{u_0}}{\sigma^{2}_{\mathrm{tot}}},
+\quad
+\rho_{1} = \frac{\sigma^{2}_e}{\sigma^{2}_{\mathrm{tot}}},
+\quad
+\sigma^{2}_{\mathrm{tot}} = \sigma^{2}_{v_0} + \sigma^{2}_{u_0} + \sigma^{2}_e.
+\]
+$\rho_3$ is the L3 intraclass correlation (the share of variance
+attributable to between-country differences); $\rho_2$ is the L2
+variance-partition coefficient (country-year deviations within country)
+\citep{SnijdersBosker2011}.
 
 \paragraph{Within--between specification.}
-The core model M3a augments \eqref{eq:m0} with L1 controls
-$X_{ict}$, country-year macro covariates $Z_{ct}$ (round dummies,
-GDP growth, unemployment, HICP inflation), and the Mundlak-decomposed
-exposure terms:
+The core model M3a augments M0 with individual controls $X_{ict}$,
+country-year macro covariates $Z_{ct}$ (round dummies, GDP growth,
+unemployment, HICP inflation), and the Mundlak-decomposed exposure
+terms:
 \begin{multline}
-y_{ict} = \gamma_{000} + \boldsymbol{\beta}^\top X_{ict}
-+ \boldsymbol{\delta}^\top Z_{ct}
-+ \gamma_W \cdot (E_{ct} - \bar E_c)
-+ \gamma_B \cdot \bar E_c \\
-+ \beta_{\mathrm{genai}} \cdot \mathrm{genai}_{ict}
-+ u_{0c} + v_{0(c,t)} + e_{ict}.
+y_{ict} = \gamma_{000}
++ \boldsymbol{\beta}^{\!\top} X_{ict}
++ \boldsymbol{\delta}^{\!\top} Z_{ct} \\
++ \gamma_{W}\,(E_{ct}-\bar E_c)
++ \gamma_{B}\,\bar E_c
++ \beta_{\mathrm{genai}}\,\mathrm{genai}_{ict}
++ v_{0c} + u_{0(c,t)} + e_{ict}.
 \label{eq:m3a}
 \end{multline}
-The Mundlak Wald is a test of $H_0: \gamma_W = \gamma_B$:
-\[
-  \mathrm{Wald} \;=\; \frac{(\hat\gamma_W - \hat\gamma_B)^2}
-                            {\widehat{\mathrm{Var}}(\hat\gamma_W) +
-                             \widehat{\mathrm{Var}}(\hat\gamma_B) -
-                             2\,\widehat{\mathrm{Cov}}(\hat\gamma_W,\hat\gamma_B)}
-  \;\overset{H_0}{\sim}\; \chi^2(1).
-\]
-M3b drops the round dummies; the comparison clarifies how much of the
-within-effect is global trend versus country-specific deviation.
+The Mundlak Wald tests $H_0:\gamma_W = \gamma_B$:
+\begin{equation}
+W \;=\; \frac{(\hat\gamma_W - \hat\gamma_B)^{2}}
+              {\widehat{\mathrm{Var}}(\hat\gamma_W)
+               + \widehat{\mathrm{Var}}(\hat\gamma_B)
+               - 2\,\widehat{\mathrm{Cov}}(\hat\gamma_W,\hat\gamma_B)}
+\;\overset{H_0}{\sim}\; \chi^{2}(1).
+\label{eq:wald}
+\end{equation}
+M3b drops the round dummies. Comparing M3a and M3b shows whether the
+within slope is driven by a common European time trend or by
+country-specific deviations from it.
 
 \paragraph{Random slopes and cross-level interactions.}
-M4 adds a random slope on individual exposure
-$\mathrm{genai}_{ict}^{\mathrm{gmc}}$, group-mean-centred so the
-intercept variance is interpretable at the country mean of exposure
-\citep{EndersTofighi2007}. M5 adds the cross-level interaction
-$(E_{ct}-\bar E_c)\times \mathrm{eisced}_{ict}$, the H4
-adjudication term. M6 restricts to OECD countries and adds the L3
-institutional moderator
-$\mathrm{EPL}_c \times (E_{ct}-\bar E_c)$ along with the EPL main
-effect.
+M4 adds a random slope on individual exposure, group-mean-centred so
+that the intercept variance is interpretable at the country mean of
+exposure \citep{EndersTofighi2007}. M5 adds the H4 cross-level
+interaction $(E_{ct}-\bar E_c)\times \mathrm{eisced}_{ict}$. M6
+restricts the sample to OECD ESS countries with a non-missing 2007 EPL
+value and adds the L3 institutional moderator
+$\mathrm{EPL}_c \times (E_{ct}-\bar E_c)$ alongside the EPL main effect.
 
 \paragraph{Estimation.}
-All models are fit by REML using \texttt{statsmodels.MixedLM} (Python
-0.14.6) with the L-BFGS-B optimizer. The 3-level structure is
-encoded by passing \texttt{groups="cntry"} for the L3 random
-intercept and a variance component
-\texttt{vc\_formula = \{"cy": "0 + C(country\_year)"\}} for the L2
-random intercept nested in L3---the Python equivalent of the
-\texttt{lme4} formulation
-$y \sim \cdots + (1\,|\,\mathrm{cntry}) + (1\,|\,\mathrm{cntry}{:}\mathrm{essround})$
+All models are fit by REML in \texttt{statsmodels.MixedLM} (0.14.6)
+with the L-BFGS optimizer. The three-level structure is encoded by
+passing \texttt{groups="cntry"} for the L3 intercept and a variance
+component \texttt{vc\_formula = \{"cy": "0 + C(country\_year)"\}} for
+the L2 country-year intercept nested within L3---the Python equivalent
+of the \texttt{lme4} formulation
+$y \sim \cdots + (1\mid\mathrm{cntry}) + (1\mid\mathrm{cntry}{:}\mathrm{essround})$
 used in the methodological literature
-\citep{BellJones2015,SchmidtCatranFairbrother2016}. Model
-comparisons that differ in the fixed part are flagged for full ML
-refitting if a likelihood ratio test is reported; here I rely on
-Wald tests of single fixed coefficients and on the
-variance-component progression.
+\citep{BellJones2015,SchmidtCatranFairbrother2016,Bates2014}. The
+reported tests are Wald tests of fixed coefficients and the Mundlak
+equality test in \eqref{eq:wald}; no likelihood-ratio test is used for
+the main claims, which avoids the ML-refit requirement on models that
+differ in the fixed part.
 
-\paragraph{Convergence diagnostics.}
-Three classes of warning surface in the rerun outputs and are
-reported here for transparency. \emph{First}, the L2 country-year
-variance component sits near its boundary of zero from M2 onward,
-generating ``MLE on the boundary of the parameter space'' warnings
-for M2--M3b, M4 (in addition to its random-slope variance), M5,
-and M6. This is consistent with the small L2 VPC ($0.01$--$0.025$)
-and is benign for the substantive fixed-effect estimates; it does
-mean that any LR test on the L2 variance component would be
-boundary-distributed and would require the conventional halving of
-the nominal $p$-value to approximate a correct one-sided test
-\citep{SnijdersBosker2011}. \emph{Second}, the random-slope model
-M4 emits a ``Hessian not positive-definite'' warning at convergence,
-as do the M6 EPL-restricted model and the LOO and Drop-R10
-robustness reruns. Point estimates are produced and the headline
-within-vs-between pattern is stable across these reruns, but the
-variance-component standard errors and small L3 inferences in those
-specifications should be treated as approximate. \emph{Third}, no
-warnings appear for the empty model M0 or the L1-only model M1,
-both of which produce well-conditioned fits.
-
-\paragraph{Inference caveats.}
-With 30 L3 units, the asymptotic Wald-normal standard errors on L3
-coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are anti-conservative.
-\citet{McNeishStapleton2016} report nominal Type-I error rates of
-$15$--$25\%$ at the $\alpha=0.05$ target under Wald-normal inference
-with $\approx\!25$--$30$ Level-3 units, depending on the random-effects
-structure. A Kenward-Roger check via \texttt{pymer4}
-\citep{Bates2014} would be a natural follow-up, but is not part of
-the submitted replication pipeline. The L3 inferences in
-Section~\ref{sec:results} should therefore be read with the
-qualification that their nominal $p$-values are \emph{potentially
-substantially} too small.
+\paragraph{Convergence and inference caveats.}
+Three classes of fit-diagnostic warning surface and are reported for
+transparency. The L2 country-year variance component sits near its
+zero boundary from M2 onward, a benign consequence of the small L2 VPC
+combined with REML shrinkage; M0 and M1 are well-conditioned. The
+random-slope M4, the EPL-restricted M6, and the LOO and Drop-R10
+robustness reruns additionally emit ``Hessian not positive-definite''
+warnings; the within--between pattern is stable across these reruns,
+but the variance-component standard errors should be read as
+approximate. Separately, with 30 L3 units the asymptotic Wald-normal
+standard errors on L3 coefficients ($\bar E_c$, $\mathrm{EPL}_c$) are
+anti-conservative. \citet{McNeishStapleton2016} report nominal Type-I
+error rates of $15$--$25\%$ at $\alpha=0.05$ with
+$\approx 25$--$30$ Level-3 units; a Kenward--Roger correction via
+\texttt{pymer4} is a natural follow-up but is outside
+the submitted pipeline. The L3 inferences in Section~\ref{sec:results}
+should therefore be read with the qualification that their nominal
+$p$-values are potentially substantially too small.

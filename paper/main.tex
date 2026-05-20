@@ -7,13 +7,13 @@
 \usepackage[english]{babel}
 \usepackage{microtype}
 \usepackage{amsmath, amssymb}
-\usepackage[a4paper, margin=2.6cm]{geometry}
+\usepackage[a4paper, margin=2.4cm]{geometry}
 \usepackage{setspace}
-\setstretch{1.10}
+\setstretch{1.05}
 \usepackage{booktabs, makecell}
 \usepackage{graphicx}
 \usepackage{caption}
-\captionsetup{font=small, labelfont=bf, skip=4pt}
+\captionsetup{font=small, labelfont=bf, skip=3pt}
 \usepackage[round, sort&compress]{natbib}
 \bibliographystyle{plainnat}
 \usepackage{hyperref}
@@ -22,38 +22,61 @@
 \usepackage{titlesec}
 \titleformat*{\section}{\large\bfseries}
 \titleformat*{\subsection}{\normalsize\bfseries}
-\setlength{\parskip}{2pt plus 1pt}
+\titlespacing*{\section}{0pt}{8pt plus 2pt}{4pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{6pt plus 2pt}{2pt plus 1pt}
+\titlespacing*{\paragraph}{0pt}{4pt plus 1pt}{6pt}
+\setlength{\parskip}{1pt plus 1pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt}
 
-\title{\textbf{When AI Exposure Looks Like Trust:\\
-Within-Between Decomposition of GenAI Occupational Exposure and
-Institutional Trust in Europe, 2012--2024}}
-\author{Karla Lučić\thanks{KU~Leuven, Master of Statistics and Data Science. Replication code at \url{https://github.com/karlalucic/MLA}.}}
+\title{\textbf{Generative-AI Occupational Exposure and Institutional
+Trust in Europe:\\
+A Within--Between Decomposition Across the European Social Survey,
+2012--2024}}
+\author{Karla Lučić\thanks{KU~Leuven, Master of Statistics and Data
+Science. Replication code at \url{https://github.com/karlalucic/MLA}.}}
 \date{April 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}\noindent
-Using six rounds of the European Social Survey (R6--R11, 2012--2024;
-$N=165{,}969$ in 30 countries, 154 country-years) merged with ILO--NASK
-2025 GenAI occupational exposure scores \citep{Gmyrek2025},
-Eurostat macro indicators, and OECD employment-protection institutions,
-I estimate a three-level pooled cross-national multilevel model of
-institutional trust. The Mundlak / within--between specification
-\citep{BellJones2015,SchmidtCatranFairbrother2016} disentangles the
-between-country level effect of mean AI exposure from the
-within-country effect of changes in exposure over time. I find a
-large positive between-country association ($\gamma_B = +11.24$,
-$p=0.002$) but a within-country effect indistinguishable from zero
-($\gamma_W = +0.02$); a Wald test rejects equality of the two
-($\chi^2(1)=9.66$, $p=0.002$). The cross-sectional positive correlation
-between AI exposure and trust does not carry through to within-country
-dynamics. The education-moderation test
-($\gamma_W \times \mathrm{ISCED}$) returns a precise null, falsifying
-both the substitution and curator hypotheses for the within-country
-margin. Results are robust to country-leverage drops, dropping the
-COVID-disrupted R10 round, item-by-item outcomes, leave-one-out
-exposure aggregation, and a within-only fixed-effects benchmark.
+Single-country studies of automation exposure and political attitudes
+usually study manufacturing-heavy robot shocks. This paper asks
+whether the same political-trust argument travels to the
+white-collar and service-oriented GenAI exposure measured by
+\citet{Gmyrek2025}. The analysis pools the European Social Survey
+(R6--R11, 2012--2024; $N=165{,}969$ in 30 countries and 154
+country-years), merges respondents to 4-digit ISCO-08 GenAI exposure
+scores, and adds Eurostat macro indicators and OECD
+employment-protection institutions. A within--between (Mundlak)
+decomposition
+\citep{Mundlak1978,BellJones2015,SchmidtCatranFairbrother2016}
+separates two questions: do countries with higher average exposure
+also have different trust levels, and do trust levels change when a
+given country's exposure changes over time? The answers diverge.
+The between-country coefficient is large and positive
+($\hat\gamma_B = +11.24$, SE $=3.43$): high-exposure countries report
+\emph{higher} institutional trust, the opposite of the
+structural-grievance prediction. The within-country coefficient is
+statistically indistinguishable from zero ($\hat\gamma_W = +0.02$)---a
+precise null, but one estimated over the narrow band of within-country
+exposure variation that remains after the common European time trend is
+absorbed, so it bounds a within effect rather than ruling one out.
+A Wald test rejects equality of the two slopes
+($\chi^2(1)=9.66$, $p=0.002$). Education does not detectably
+moderate the within-country exposure slope
+($\hat{\gamma}_{W \times \mathrm{ISCED}} = -0.142$, $p=0.275$).
+The evidence therefore points to a cross-sectional selection pattern:
+countries with more AI-exposed occupational structures are also
+richer, more service-based, and more institutionally capable. Those
+country characteristics, not within-country exposure shifts, explain
+the positive trust association. The pattern survives country-leverage
+drops, item-by-item outcomes, dropping the COVID-disrupted R10,
+leave-one-out cell aggregation, and a within-only fixed-effects
+benchmark.
 \end{abstract}
 
 \input{sections/intro}
