@@ -1,4 +1,4 @@
-# Multilevel Analysis Final Paper — KU Leuven 2026
+# Multilevel Analysis Paper — KU Leuven 2026
 
 Within-between multilevel analysis of GenAI exposure and political trust across European countries (ESS R6-R11, ILO-NASK 2025 occupation scores).
 
@@ -32,7 +32,6 @@ If the ESS API beta does not yet support SAV downloads, place R10 and R11 SAV fi
 - `src/mla/` — importable Python helpers (ESS loader, exposure merger, Mundlak decomposition, model wrappers, plotting).
 - `data/raw|interim|analysis/` — gitignored data tree.
 - `tests/` — pytest sanity checks.
-- `KUL_MultilevelAnalysis_26/` — course materials (lectures, exercises, R example data).
 
 ## Course context
 
