@@ -27,7 +27,7 @@ If the ESS API beta does not yet support SAV downloads, place R10 and R11 SAV fi
 
 ## Project layout
 
-- `paper/` — LaTeX sources for the 12-page paper.
+- `paper/` — LaTeX sources for the paper.
 - `notebooks/` — analysis notebooks `00_…` through `09_…`.
 - `src/mla/` — importable Python helpers (ESS loader, exposure merger, Mundlak decomposition, model wrappers, plotting).
 - `data/raw|interim|analysis/` — gitignored data tree.
