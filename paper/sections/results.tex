@@ -3,9 +3,9 @@
 \subsection{Variance decomposition}\label{sec:results-vc}
 
 The empty model M0 places trust variance roughly one-quarter at the
-country level and one-fortieth at the country-year level. On the M3a
-common sample ($N=165{,}969$, 30 countries), $\rho_3=0.243$,
-$\rho_2=0.025$, and the L1 share is $0.732$. The L3 share sits inside
+country level and one-fortieth at the country-year level. Fit on the M3a
+common sample ($N=165{,}969$, 30 countries), M0 gives
+$\rho_3=0.243$, $\rho_2=0.025$, and an L1 share of $0.732$. The L3 share sits inside
 the $0.15$--$0.25$ band that \citet{SchmidtCatranFairbrother2016} report
 for European trust outcomes; the L2 share, while modest, is above the
 soft floor below which a within--between decomposition adds little to a
@@ -42,8 +42,9 @@ point estimates are
   \hat\gamma_B = +11.239 \;(\mathrm{SE}\;3.427),
 \]
 with a Wald test of equality $\chi^2(1)=9.66$, $p=0.002$. The
-within-country slope is statistically indistinguishable from zero; the
-between-country slope is large, positive, and significant.
+within-country slope is statistically indistinguishable from zero,
+leaving H2's predicted within erosion unsupported; the between-country
+slope is large, positive, and significant.
 
 Because both Mundlak terms enter on the native ILO--NASK $0$--$1$ scale
 rather than the individual exposure's $z$-scale, the raw coefficients
@@ -70,7 +71,7 @@ selection rather than experience. Countries with higher mean GenAI
 exposure---typically wealthier, more service-oriented, and
 institutionally stronger---report \emph{higher} trust, not lower. The
 cross-sectional correlation is bound up with what makes a country
-high-exposure in the first place. Removing round dummies (M3b) flips
+high-exposure in the first place. Removing round dummies (M3b) inflates
 the within slope to $\hat\gamma_W = +1.46$, attributing the global
 2012--2024 trend in trust to within-country exposure changes; the gap
 between M3a and M3b therefore clarifies that within-country exposure
@@ -88,7 +89,7 @@ Kosovo, the United Kingdom; see Section~\ref{sec:data}).
 
 The individual-level coefficient also runs against H3.
 $\hat\beta_{\mathrm{genai}}=+0.015$ ($\mathrm{SE}\;0.002$) is small,
-positive, and significant in M1 onward; H3 predicted a negative sign.
+positive, and significant across M1--M3b; H3 predicted a negative sign.
 The composition channel through which AI-exposed individuals would
 themselves report lower trust does not run as the single-country
 literature would predict, and the small individual-level positive sign
@@ -176,8 +177,8 @@ $\hat\gamma_B = +10.43$ ($p=0.004$) and $\hat\gamma_W = +0.06$, so the
 gap survives with only modest attenuation. Finally, a within-only
 fixed-effects benchmark (\texttt{linearmodels.PanelOLS} with country
 fixed effects and cluster-robust SEs) yields a coefficient on
-$\bar E_{ct}$ of $-0.19$, substantively the same conclusion: the
-within-country association is close to zero relative to the large
-between-country coefficient.
+$\bar E_{ct}$ of $-0.19$---opposite in sign to the Mundlak within slope
+but, like it, negligible relative to the large between-country
+coefficient, the same substantive conclusion.
 
 \input{tables/tab3b_robustness}
